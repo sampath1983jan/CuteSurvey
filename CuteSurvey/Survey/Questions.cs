@@ -28,11 +28,12 @@ namespace CuteSurvey.Survey
         /// </summary>
         /// <param name="questionType"></param>
         /// <returns></returns>
-        public Question NewQuestion(SurveyQuestionType questionType,string choices)
+        public Question NewQuestion(SurveyQuestionType questionType,int pageNo, string choices="")
         {
             var question = CuteSurvey.Survey.QuestionFactory.Create(
             new QuestionHanlderFactory(), questionType);
             question.choices.Add(choices.Split(Convert.ToChar(',')));
+            question.PageNo = pageNo;
             return question;
         }
         /// <summary>
@@ -50,10 +51,11 @@ namespace CuteSurvey.Survey
         /// </summary>
         /// <param name="questionType"></param>
         /// <returns></returns>
-        public Question NewQuestionWithDefault(SurveyQuestionType questionType)
+        public Question NewQuestionWithDefault(SurveyQuestionType questionType,int pageNo)
         {
             var question = CuteSurvey.Survey.QuestionFactory.Create(
             new QuestionHanlderFactory(), questionType);
+            question.PageNo = pageNo;
             return question.Default();
         }
         public Question Duplicate(int questionID)

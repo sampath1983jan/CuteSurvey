@@ -35,6 +35,7 @@ namespace CuteSurvey.SurveyFactory
         string introductionNote;
         string thanksNote;
         Questions questions;
+        List<Page> pages;
         /// <summary>
         /// 
         /// </summary>
@@ -66,9 +67,18 @@ namespace CuteSurvey.SurveyFactory
         /// <summary>
         /// 
         /// </summary>
+        public List<Page> Pages { get => pages; }
+        /// <summary>
+        /// 
+        /// </summary>
+        private int CurrentPageNo;
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="surveyTemplateID"></param>
         public SurveyTemplate(int surveyTemplateID) {
             SurveyTemplateID = surveyTemplateID;
+            pages = new List<Page>();
             questions = new Questions(surveyTemplateID);
         }
         /// <summary>
@@ -86,6 +96,16 @@ namespace CuteSurvey.SurveyFactory
             IntroductionNote = introNode;
             ThanksNote = thanksNote;
             questions = new Questions(-1);
+            AddPage();
+        }
+        public SurveyTemplate AddPage() {
+            CurrentPageNo = CurrentPageNo + 1;
+            Pages.Add(new Page(CurrentPageNo, CurrentPageNo));
+            return this;
+        }
+        public bool InsertPage(int pageIndex,int PageNo) {
+            //pages.Insert(pageIndex,)
+            return true;
         }
         /// <summary>
         /// 

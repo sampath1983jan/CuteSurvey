@@ -12,6 +12,7 @@ namespace CuteSurvey.Survey
         _single = 1,
         _multiple = 2
     }
+
     public enum SurveyQuestionType {
         _input=0,
         _singleSelection=1,        
@@ -21,6 +22,7 @@ namespace CuteSurvey.Survey
         _MatricsMultiChoice=5, 
         _Ranking=6
     }
+
     public interface IQuestionAction {
         bool Save();
         bool Update();
@@ -35,6 +37,7 @@ namespace CuteSurvey.Survey
         string Comments { get; set; }      
         bool IsRequired { get; set; }
         int MaxLength { get; set; }
+        int PageNo { get; set; }
         string ValidationMessage { get; set; }
         SelectionChoice SelectionChoice { get; set; }
         Question Default();
@@ -58,7 +61,7 @@ namespace CuteSurvey.Survey
         private bool isRequired;
         private int maxLength;
         private string validationMessage;
-
+        private int pageNo;
         public SurveyQuestionType QuestionType;
         public int QuestionID { get => questionID; set => questionID = value; }
         public string QuestionName { get => questionName; set => questionName=value; }
@@ -69,6 +72,8 @@ namespace CuteSurvey.Survey
         public int MaxLength { set => maxLength = value; get => maxLength; }
         public string ValidationMessage { set => validationMessage = value; get => validationMessage; }
         public SelectionChoice SelectionChoice { set => selectionChoice=value; get =>selectionChoice; }
+        public int PageNo { get => pageNo; set => pageNo=value; }
+
         public abstract Question Clone();
         public abstract Question Default();
         public Choices choices;
@@ -100,6 +105,7 @@ namespace CuteSurvey.Survey
             ValidationMessage = "";
             selectionChoice = SelectionChoice._none;
             choices = new Choices(QuestionID);
+            pageNo = 1;
             return this;
         }
         
