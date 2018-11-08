@@ -8,6 +8,6 @@ namespace CuteSurvey
 {
   public class SurveyManager
     {
-
+        
     }
 }

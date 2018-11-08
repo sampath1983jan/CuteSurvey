@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CuteSurvey.Survey
+namespace CuteSurvey.Result
 {
-    public class QuestionAttribute
+   public class SurveyResult
     {
 
     }

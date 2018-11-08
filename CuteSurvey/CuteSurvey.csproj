@@ -43,13 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Survey\Choice.cs" />
+    <Compile Include="Result\SurveyResult.cs" />
+    <Compile Include="Survey\Component\Choice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Survey\Pages.cs" />
-    <Compile Include="Survey\Question.cs" />
-    <Compile Include="Survey\QuestionAttribute.cs" />
-    <Compile Include="Survey\QuestionFactory.cs" />
-    <Compile Include="Survey\Questions.cs" />
+    <Compile Include="Survey\Component\Pages.cs" />
+    <Compile Include="Survey\Component\Question.cs" />
+    <Compile Include="Survey\Component\QuestionFactory.cs" />
+    <Compile Include="Survey\Component\Questions.cs" />
     <Compile Include="Survey\QuestionType\InputQuestion.cs" />
     <Compile Include="Survey.cs" />
     <Compile Include="SurveyManager.cs" />
@@ -61,6 +61,7 @@
     <Compile Include="Survey\QuestionType\MatricsQuestion.cs" />
     <Compile Include="Survey\QuestionType\RankingQuestion.cs" />
     <Compile Include="Survey\QuestionType\SingleSelectionQuestion.cs" />
+    <Compile Include="UserSurvey.cs" />
     <Compile Include="Utility\QueryList.cs" />
     <Compile Include="Utility\Shared.cs" />
   </ItemGroup>
