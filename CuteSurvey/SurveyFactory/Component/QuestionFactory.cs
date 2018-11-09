@@ -1,11 +1,11 @@
-﻿using CuteSurvey.Survey.QuestionType;
+﻿using CuteSurvey.SurveyFactory.Component.QuestionType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CuteSurvey.Survey
+namespace CuteSurvey.SurveyFactory.Component
 {
     public class QuestionFactory
     {

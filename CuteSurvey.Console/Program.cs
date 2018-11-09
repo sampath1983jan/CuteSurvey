@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CuteSurvey.Survey;
-
+using CuteSurvey.SurveyFactory.Component;
+using System.Data;
+using CuteSurvey.Utility;
 namespace CuteSurvey.Console
 {
     class Program
@@ -20,15 +22,60 @@ namespace CuteSurvey.Console
             //borrowvideo.BorrowItem("Customer #1");
             //borrowvideo.BorrowItem("Customer #1");
             //borrowvideo.Display();
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("SurveyID", typeof(int)));
+            dt.Columns.Add(new DataColumn("sDate", typeof(DateTime)));
+            dt.Columns.Add(new DataColumn("eDate", typeof(DateTime)));
+            dt.Columns.Add(new DataColumn("status", typeof(int)));
+            DataRow dr;
+            dr= dt.NewRow();
+            dr[0] = 1;
+            dr[1] = DateTime.Now;
+            dr[2] = DateTime.Now.AddDays(4);
+            dr[3] = 1;
+            dt.Rows.Add(dr);
+
+            dr = dt.NewRow();
+            dr[0] = 2;
+            dr[1] = DateTime.Now.AddDays(1);
+            dr[2] = DateTime.Now.AddDays(6);
+            dr[3] = 2;
+            dt.Rows.Add(dr);
+
+            dr = dt.NewRow();
+            dr[0] = 3;
+            dr[1] = DateTime.Now.AddMonths(1);
+            dr[2] = DateTime.Now.AddDays(4);
+            dr[3] = 2;
+            dt.Rows.Add(dr);
+            dt.AcceptChanges();
+            
+            var surveys=    dt.toList<Survey.Survey >(
+            new DataFieldMappings().Add("SurveyID","SurveyID")
+            .Add("sDate", "StartDate")
+            .Add ("eDate","EndDate").Add("status","Status").Add("statusss", "status"), Bind);
+
+            var sr = new CuteSurvey.Survey.Survey();            
+
             var s = new CuteSurvey.SurveyFactory.SurveyTemplate(1);
-            var iquestion= s.Questions.NewQuestion(SurveyQuestionType._input).Default();
+            var iquestion = s.Questions.NewQuestion(SurveyQuestionType._input,1).Default();
             iquestion.IsRequired = true;
-            s.Questions.AddQuestion(iquestion,Program.CallMe);
+            s.Questions.AddQuestion(iquestion, Program.CallMe);
             var iq = s.Questions.Duplicate(-1);
             s.Questions.AddQuestion(iq, Program.CallMe);
             s.Questions.Remove(-1, Program.AfterRemove);
-            List<Question> qu= s.Questions.GetQuestion(x => x.IsRequired = true && x.MaxLength == 0);
-            System.Console.ReadLine();                        
+            List<Question> qu = s.Questions.GetQuestion(x => x.IsRequired = true && x.MaxLength == 0);
+            System.Console.ReadLine();
+        }
+
+        public static CuteSurvey.SurveyFactory.SurveyTemplate load(int sid) {
+
+        }
+
+        public static Survey.Survey Bind(Survey.Survey survey) {
+            survey.SurveyID  = 100;
+            return survey;
         }
         public static bool AfterRemove(Question question) {
             return true;

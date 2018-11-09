@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CuteSurvey.Utility;
-namespace CuteSurvey.Survey
+namespace CuteSurvey.SurveyFactory.Component.Utility
 {
     public class Choice
     {

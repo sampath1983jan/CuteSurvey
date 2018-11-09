@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CuteSurvey.Survey.QuestionType;
+using CuteSurvey.SurveyFactory.Component.QuestionType;
 using System.Dynamic;
 using System.ComponentModel;
+using CuteSurvey.SurveyFactory.Component;
 
 namespace CuteSurvey.SurveyFactory
 {
@@ -17,6 +18,7 @@ namespace CuteSurvey.SurveyFactory
         string Description { get; set; }    
         string IntroductionNote { get; set; }
         string ThanksNote { get; set; }
+        List<Page> Pages { get; } 
         Questions Questions {  get; }
     }
 
@@ -25,7 +27,6 @@ namespace CuteSurvey.SurveyFactory
         bool Update();
         bool Delete();
     }
-
     public class SurveyTemplate: ISurveyTemplate,ISurveyActions
     {
         int surveyTemplateID;
@@ -68,6 +69,8 @@ namespace CuteSurvey.SurveyFactory
         /// 
         /// </summary>
         public List<Page> Pages { get => pages; }
+        
+
         /// <summary>
         /// 
         /// </summary>
@@ -103,8 +106,7 @@ namespace CuteSurvey.SurveyFactory
             Pages.Add(new Page(CurrentPageNo, CurrentPageNo));
             return this;
         }
-        public bool InsertPage(int pageIndex,int PageNo) {
-            //pages.Insert(pageIndex,)
+        public bool InsertPage(int pageIndex,int PageNo) {            
             return true;
         }
         /// <summary>

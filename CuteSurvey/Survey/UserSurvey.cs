@@ -14,8 +14,8 @@ namespace CuteSurvey.Survey
 
    public class UserSurvey
     {
-        public int SurveyID;
-        public int UserID;
-        public UserSurveyStatus Status;
+        public int SurveyID { get; set; }
+        public int UserID { get; set; }
+        public UserSurveyStatus Status { get; set; }
     }
 }

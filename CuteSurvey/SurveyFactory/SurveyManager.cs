@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CuteSurvey
 {
-  public class SurveyManager
+  public class SurveyBuilder
     {
         
     }

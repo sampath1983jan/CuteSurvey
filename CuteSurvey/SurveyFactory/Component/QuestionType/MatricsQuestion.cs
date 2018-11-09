@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CuteSurvey.Survey.QuestionType
+namespace CuteSurvey.SurveyFactory.Component.QuestionType
 {
     public class MatricsQuestion : Question
     {

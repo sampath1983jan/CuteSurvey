@@ -44,24 +44,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Result\SurveyResult.cs" />
-    <Compile Include="Survey\Component\Choice.cs" />
+    <Compile Include="SurveyFactory\Component\Choice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Survey\Component\Pages.cs" />
-    <Compile Include="Survey\Component\Question.cs" />
-    <Compile Include="Survey\Component\QuestionFactory.cs" />
-    <Compile Include="Survey\Component\Questions.cs" />
-    <Compile Include="Survey\QuestionType\InputQuestion.cs" />
-    <Compile Include="Survey.cs" />
-    <Compile Include="SurveyManager.cs" />
-    <Compile Include="SurveyTemplate.cs" />
-    <Compile Include="Survey\QuestionType\LikelyQuestion.cs" />
-    <Compile Include="Survey\QuestionType\MatricsMultiChoiseQuestion.cs" />
-    <Compile Include="Survey\QuestionType\MultiSelectionQuestion.cs" />
-    <Compile Include="Survey\QuestionType\RangeQuestion.cs" />
-    <Compile Include="Survey\QuestionType\MatricsQuestion.cs" />
-    <Compile Include="Survey\QuestionType\RankingQuestion.cs" />
-    <Compile Include="Survey\QuestionType\SingleSelectionQuestion.cs" />
-    <Compile Include="UserSurvey.cs" />
+    <Compile Include="SurveyFactory\Component\Pages.cs" />
+    <Compile Include="SurveyFactory\Component\Question.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionFactory.cs" />
+    <Compile Include="SurveyFactory\Component\Questions.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\InputQuestion.cs" />
+    <Compile Include="Survey\Survey.cs" />
+    <Compile Include="SurveyFactory\SurveyManager.cs" />
+    <Compile Include="SurveyFactory\SurveyTemplate.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\LikelyQuestion.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\MatricsMultiChoiseQuestion.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\MultiSelectionQuestion.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\RangeQuestion.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\MatricsQuestion.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\RankingQuestion.cs" />
+    <Compile Include="SurveyFactory\Component\QuestionType\SingleSelectionQuestion.cs" />
+    <Compile Include="Survey\UserAnswer.cs" />
+    <Compile Include="Survey\UserSurvey.cs" />
     <Compile Include="Utility\QueryList.cs" />
     <Compile Include="Utility\Shared.cs" />
   </ItemGroup>

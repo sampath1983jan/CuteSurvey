@@ -1,10 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CuteSurvey.SurveyFactory.Component.Utility;
 
-namespace CuteSurvey.Survey
+namespace CuteSurvey.SurveyFactory.Component
 {
     public enum SelectionChoice
     {
@@ -40,6 +42,7 @@ namespace CuteSurvey.Survey
         int PageNo { get; set; }
         string ValidationMessage { get; set; }
         SelectionChoice SelectionChoice { get; set; }
+        bool EnableComment { get; set; }
         Question Default();
     }
 
@@ -62,6 +65,7 @@ namespace CuteSurvey.Survey
         private int maxLength;
         private string validationMessage;
         private int pageNo;
+        private bool enableComment;
         public SurveyQuestionType QuestionType;
         public int QuestionID { get => questionID; set => questionID = value; }
         public string QuestionName { get => questionName; set => questionName=value; }
@@ -73,6 +77,7 @@ namespace CuteSurvey.Survey
         public string ValidationMessage { set => validationMessage = value; get => validationMessage; }
         public SelectionChoice SelectionChoice { set => selectionChoice=value; get =>selectionChoice; }
         public int PageNo { get => pageNo; set => pageNo=value; }
+        public bool EnableComment { get => enableComment; set => enableComment=value; }
 
         public abstract Question Clone();
         public abstract Question Default();
