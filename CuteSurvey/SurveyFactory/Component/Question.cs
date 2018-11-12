@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CuteSurvey.SurveyFactory.Component.Utility;
+using CuteSurvey.SurveyFactory.Component.QuestionItem;
 
 namespace CuteSurvey.SurveyFactory.Component
 {
@@ -32,7 +32,7 @@ namespace CuteSurvey.SurveyFactory.Component
         bool Validation();
     }
     public interface IQuestion {
-        int TemplateIID { get; set; }
+        int TemplateID { get; set; }
         int QuestionID { get; set; }
         string QuestionName { get; set; }
         string Note { get; set; }        
@@ -71,7 +71,7 @@ namespace CuteSurvey.SurveyFactory.Component
         public string QuestionName { get => questionName; set => questionName=value; }
         public string Note { get => note; set => note=value; }
         public string Comments { get => comments; set => comments=value; }
-        public int TemplateIID { get => templateID; set => templateID=value; }        
+        public int TemplateID { get => templateID; set => templateID=value; }        
         public bool IsRequired { set => isRequired = value; get => isRequired; }
         public int MaxLength { set => maxLength = value; get => maxLength; }
         public string ValidationMessage { set => validationMessage = value; get => validationMessage; }
@@ -81,7 +81,8 @@ namespace CuteSurvey.SurveyFactory.Component
 
         public abstract Question Clone();
         public abstract Question Default();
-        public Choices choices;
+        public Choices Choices;
+        public Criterias Criterias;
 
         public  bool Save()
         {
@@ -109,13 +110,14 @@ namespace CuteSurvey.SurveyFactory.Component
             MaxLength = 1000;
             ValidationMessage = "";
             selectionChoice = SelectionChoice._none;
-            choices = new Choices(QuestionID);
+            Choices = new Choices(QuestionID);
+            Criterias = new Criterias(questionID);
             pageNo = 1;
             return this;
         }
         
         public Question UpdateKey() {
-            foreach (Choice i in choices.toList()) {
+            foreach (Choice i in Choices.toList()) {
                 i.QuestionID = QuestionID;
             }
             return this;

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CuteSurvey</RootNamespace>
     <AssemblyName>CuteSurvey</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -46,11 +46,14 @@
     <Compile Include="Result\SurveyResult.cs" />
     <Compile Include="SurveyFactory\Component\Choice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SurveyFactory\Component\Criteria.cs" />
     <Compile Include="SurveyFactory\Component\Pages.cs" />
     <Compile Include="SurveyFactory\Component\Question.cs" />
     <Compile Include="SurveyFactory\Component\QuestionFactory.cs" />
     <Compile Include="SurveyFactory\Component\Questions.cs" />
     <Compile Include="SurveyFactory\Component\QuestionType\InputQuestion.cs" />
+    <Compile Include="Survey\Choice.cs" />
+    <Compile Include="Survey\Criteria.cs" />
     <Compile Include="Survey\Survey.cs" />
     <Compile Include="SurveyFactory\SurveyManager.cs" />
     <Compile Include="SurveyFactory\SurveyTemplate.cs" />
@@ -66,6 +69,11 @@
     <Compile Include="Utility\QueryList.cs" />
     <Compile Include="Utility\Shared.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\CuteSurvey.Data\CuteSurvey.Data.csproj">
+      <Project>{55eea4b6-2a38-47ac-87bd-a96579a92eb9}</Project>
+      <Name>CuteSurvey.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,46 +1,47 @@
-﻿using System;
+﻿using CuteSurvey.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CuteSurvey.Utility;
+
 namespace CuteSurvey.SurveyFactory.Component.QuestionItem
 {
-    public class Choice
+ public   class Criteria
     {
         public string Name;
-        public int OrderNo;        
-        public int ChoiceID;
+        public int OrderNo;
+        public int CriteriaID;
         public int QuestionID;
-        public Choice(int choiceID,int questionID, string name, int orderNo) {
+        public Criteria(int criteriaID, int questionID, string name, int orderNo)
+        {
             QuestionID = questionID;
             Name = name;
             OrderNo = orderNo;
-            ChoiceID = choiceID;            
+            CriteriaID = criteriaID;
         }
-        public Choice(Func<Choice, bool> bind) {
-            bind(this);           
+        public Criteria(Func<Criteria, bool> bind)
+        {
+            bind(this);
         }
-        public Choice() {
+        public Criteria() {
 
         }
     }
 
-    
-
-    public class Choices {
-        private QueryList<Choice> choices;
+    public class Criterias {
+           private QueryList<Criteria> criterias;
         private int QuestionID;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="questionID"></param>
-        public Choices(int questionID) {
-            choices = new QueryList<Choice>();
+        public Criterias(int questionID) {
+            criterias = new QueryList<Criteria>();
             QuestionID = questionID;
         }
-        public List<Choice> toList() {
-            return choices.toList();
+        public List<Criteria> toList() {
+            return criterias.toList();
         }
         /// <summary>
         /// 
@@ -50,7 +51,7 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         public bool Add(string[] itemArray) {
             for (int i = 0; i < itemArray.Length; i++) {
                 if (!isExist(itemArray[i].ToString())) {
-                    choices.Add(new Choice(-1, QuestionID, itemArray[i].ToString(), i + 1));
+                    criterias.Add(new Criteria(-1, QuestionID, itemArray[i].ToString(), i + 1));
                 }                
             }
             return true;
@@ -58,22 +59,22 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="choiceID"></param>
+        /// <param name="CriteriaID"></param>
         /// <param name="questionID"></param>
         /// <param name="name"></param>
         /// <param name="orderNo"></param>
         /// <returns></returns>
-        public bool Add(int choiceID, string name, int orderNo) {
-            choices.Add(new Choice(choiceID, this.QuestionID, name, orderNo));
+        public bool Add(int CriteriaID, string name, int orderNo) {
+            criterias.Add(new Criteria(CriteriaID, this.QuestionID, name, orderNo));
             return true;
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="choiceID"></param>
+        /// <param name="CriteriaID"></param>
         /// <returns></returns>
-        public bool Remove(int choiceID) {
-            choices.Remove(x => x.ChoiceID == choiceID);
+        public bool Remove(int CriteriaID) {
+            criterias.Remove(x => x.CriteriaID == CriteriaID);
             return true;    
         }
         /// <summary>
@@ -82,10 +83,7 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         /// <param name="Name"></param>
         /// <returns></returns>
         public bool isExist(string Name) {
-            return choices.Search(x => x.Name == Name).Count > 0 ? true : false;
+            return criterias.Search(x => x.Name == Name).Count > 0 ? true : false;
         }
-
     }
 }
-
-

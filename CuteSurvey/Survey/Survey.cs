@@ -20,6 +20,7 @@ namespace CuteSurvey.Survey
          DateTime EndDate { get; set; }
          SurveyStatus Status { get; set; }
          void Load();
+        bool Save();
     }
     [Serializable]
     public class Survey:ISurvey
@@ -36,6 +37,7 @@ namespace CuteSurvey.Survey
         public DateTime StartDate { get => startDate; set => startDate = value; }
         public DateTime EndDate { get => endDate; set => endDate = value; }
         public SurveyStatus Status { get => status; set => status=value; }
+
         public Survey()
         {
 
@@ -45,8 +47,14 @@ namespace CuteSurvey.Survey
             Template = new SurveyTemplate(templateID);
             StartDate = startDate;
             EndDate = endDate;
-        }                
+        }
+                 
         public void Load()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }

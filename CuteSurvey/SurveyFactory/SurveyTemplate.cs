@@ -8,10 +8,12 @@ using CuteSurvey.SurveyFactory.Component.QuestionType;
 using System.Dynamic;
 using System.ComponentModel;
 using CuteSurvey.SurveyFactory.Component;
+using System.Data;
 
 namespace CuteSurvey.SurveyFactory
 {
-    public interface ISurveyTemplate {
+    public abstract class ISurveyTemplate
+    {
         int SurveyTemplateID { get; set; }
         string Name { get; set; }
         string Category { get; set; }
@@ -20,14 +22,15 @@ namespace CuteSurvey.SurveyFactory
         string ThanksNote { get; set; }
         List<Page> Pages { get; } 
         Questions Questions {  get; }
+        public ISurveyActions SurveyHandler { get; set; }
     }
-
     public interface ISurveyActions {
-        bool Save();
-        bool Update();
-        bool Delete();
+        bool Save(SurveyTemplate template);
+        bool Update(SurveyTemplate template);
+        bool Delete(int SurveyTemplateID);
+        DataTable Load(int templateID);
     }
-    public class SurveyTemplate: ISurveyTemplate,ISurveyActions
+    public class SurveyTemplate: ISurveyTemplate
     {
         int surveyTemplateID;
         string name;
@@ -97,8 +100,9 @@ namespace CuteSurvey.SurveyFactory
             Category = category;
             Description = description;
             IntroductionNote = introNode;
-            ThanksNote = thanksNote;
+            ThanksNote = thankNote;
             questions = new Questions(-1);
+            pages = new List<Page>();
             AddPage();
         }
         public SurveyTemplate AddPage() {
@@ -112,29 +116,62 @@ namespace CuteSurvey.SurveyFactory
         /// <summary>
         /// 
         /// </summary>
-        private void LoadTemplate() {
-
+        /// <returns></returns>
+        public bool Save() {
+            return SurveyHandler.Save(this);            
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool Update() {
+            return SurveyHandler.Update(this);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool Delete() {
+            return SurveyHandler.Delete(this.surveyTemplateID);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void LoadTemplate() {
+            SurveyHandler.Load(this.surveyTemplateID);
         }
         public ISurveyTemplate AcceptChanges() {
             return this;
         }       
-       /// <summary>
-       /// 
-       /// </summary>
-       /// <returns></returns>
-        public bool Save()
+    }
+
+    public class SurveyTemplateImplimentor : ISurveyActions
+    {
+        public bool Delete(int templateID)
         {
             throw new NotImplementedException();
         }
-        public bool Update()
+
+        public DataTable Load(int templateID)
         {
+            Data.SurveyTemplate st = new Data.SurveyTemplate("");           
             throw new NotImplementedException();
         }
-        public bool Delete()
+
+        public bool Save(SurveyTemplate template)
+        {
+            Data.SurveyTemplate st = new Data.SurveyTemplate("SslMode=none;persistsecurityinfo=True;SERVER=localhost;UID=root;DATABASE=cutesurvey;PASSWORD=admin312;");
+            template.SurveyTemplateID = st.SaveTemplate(template.Name, template.Description, template.Category, template.IntroductionNote, template.ThanksNote, "");            
+            if (template.SurveyTemplateID > 0) {
+                return true;
+            } else return false;            
+        }
+        public bool Update(SurveyTemplate template)
         {
             throw new NotImplementedException();
-        }
-    }   
+        }//
+    }
+
 }
 
 

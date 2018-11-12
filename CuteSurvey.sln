@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuteSurvey", "CuteSurvey\Cu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuteSurvey.Console", "CuteSurvey.Console\CuteSurvey.Console.csproj", "{4D5AF955-1C35-4727-9389-399BFF3A5336}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{05B09C0C-9256-401C-9621-64754162500F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuteSurvey.Data", "..\CuteSurvey.Data\CuteSurvey.Data.csproj", "{55EEA4B6-2A38-47AC-87BD-A96579A92EB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{4D5AF955-1C35-4727-9389-399BFF3A5336}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D5AF955-1C35-4727-9389-399BFF3A5336}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D5AF955-1C35-4727-9389-399BFF3A5336}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05B09C0C-9256-401C-9621-64754162500F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05B09C0C-9256-401C-9621-64754162500F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05B09C0C-9256-401C-9621-64754162500F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05B09C0C-9256-401C-9621-64754162500F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55EEA4B6-2A38-47AC-87BD-A96579A92EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55EEA4B6-2A38-47AC-87BD-A96579A92EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55EEA4B6-2A38-47AC-87BD-A96579A92EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55EEA4B6-2A38-47AC-87BD-A96579A92EB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
