@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CuteSurvey.Utility;
 using CuteSurvey.SurveyFactory.Component;
+using System.Data;
+
 namespace CuteSurvey.SurveyFactory.Component
 {
     public interface IQuestions {
-        void Load(int surveyTemplateID);
+        DataTable Load(int surveyTemplateID);
         bool Save(Question question);
         bool Update(Question question);
         bool AddQuestion(Question question);
@@ -19,15 +21,15 @@ namespace CuteSurvey.SurveyFactory.Component
         bool Remove(Question question);
     }
 
-    public abstract class SurveyTemplateQuestion
+    public abstract class ISurveyTemplateQuestion
     {
         public IQuestions questionHandler;
        // public abstract Question NewQuestion(SurveyQuestionType questionType, int pageNo, string choices = "");
     }
-   public class Questions:SurveyTemplateQuestion
+   public class Questions:ISurveyTemplateQuestion
     {
         /// <summary>
-        /// 
+        ///     
         /// </summary>
         private readonly int SurveyTemplateID;
         /// <summary>
@@ -45,8 +47,28 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <summary>
         /// 
         /// </summary>
-        private void Load() {
-            questionHandler.Load(SurveyTemplateID);
+        public void Load() {
+            DataTable  dt = new DataTable();
+            List<Question> questions;
+            dt =  questionHandler.Load(SurveyTemplateID);                   
+            questions = dt.toList<Question>(new DataFieldMappings()
+                  .Add("QuestionID", "QuestionID")
+                  .Add("QuestionName", "QuestionName")
+                  .Add("Note", "Note")
+                  .Add("QuestionType", "QuestionType")
+                  .Add("Description", "Comments")
+                  .Add("SurveyTemplateID", "TemplateID")
+                  .Add("IsRequired", "IsRequired")
+                  .Add("MaxLength", "MaxLength")
+                  .Add("ValidationMessage", "ValidationMessage")
+                  .Add("SelectionChoice", "SelectionChoice")
+                  .Add("PageNo", "PageNo")
+                  .Add("enableComment", "EnableComment")
+                  , null);
+            foreach (Question q in questions)
+            {
+                this.AddQuestion(q);
+            }
         }
         /// <summary>
         /// 
@@ -91,7 +113,6 @@ namespace CuteSurvey.SurveyFactory.Component
             }
             return this;
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -104,7 +125,6 @@ namespace CuteSurvey.SurveyFactory.Component
             question.PageNo = pageNo;
             return question.Default();
         }
-
         public Question Duplicate(int questionID)
         {
             var qust = GetQuestion(questionID).Clone();
@@ -153,13 +173,15 @@ namespace CuteSurvey.SurveyFactory.Component
         {
             return GetQuestion(search).Count > 0 ? true : false;
         }
+
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="question"></param>
         /// <param name="Save"></param>
         /// <returns></returns>
-        public bool AddQuestion(Question question, Func<Question, bool> Save)
+        public bool Save(Question question)
         {
             //check Question Exist or not then update;
             if (IsQuestionExist(x => x.QuestionID == question.QuestionID))
@@ -170,8 +192,30 @@ namespace CuteSurvey.SurveyFactory.Component
             else
             {
                 QuestionList.Add(question);
+            }             
+                questionHandler.Save(question);
+           
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="Save"></param>
+        /// <returns></returns>
+        public bool AddQuestion(Question question)
+        {
+            //check Question Exist or not then update;
+            if (IsQuestionExist(x => x.QuestionID == question.QuestionID))
+            {
+                var gQuestion = GetQuestion(question.QuestionID);
+                CuteSurvey.Utility.Common.Combine<Question>(ref gQuestion, question);
             }
-            questionHandler.Save(question);
+            else
+            {
+                QuestionList.Add(question);
+            }                       
             return true;            
         }
         /// <summary>

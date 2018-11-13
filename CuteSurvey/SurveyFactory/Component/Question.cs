@@ -41,6 +41,7 @@ namespace CuteSurvey.SurveyFactory.Component
         int MaxLength { get; set; }
         int PageNo { get; set; }
         string ValidationMessage { get; set; }
+        
         SelectionChoice SelectionChoice { get; set; }
         bool EnableComment { get; set; }
         Question Default();
@@ -110,8 +111,8 @@ namespace CuteSurvey.SurveyFactory.Component
             MaxLength = 1000;
             ValidationMessage = "";
             selectionChoice = SelectionChoice._none;
-            Choices = new Choices(QuestionID);
-            Criterias = new Criterias(questionID);
+            Choices = new Choices(QuestionID,templateID);
+            Criterias = new Criterias(templateID,questionID);
             pageNo = 1;
             return this;
         }

@@ -8,12 +8,14 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
 {
     public class Choice
     {
-        public string Name;
-        public int OrderNo;        
-        public int ChoiceID;
-        public int QuestionID;
-        public Choice(int choiceID,int questionID, string name, int orderNo) {
+        public string Name { get; set; }
+        public int OrderNo { get; set; }
+        public int ChoiceID { get; set; }
+        public int QuestionID { get; set; }
+        public int SurveyTemplateID { get; set; }
+        public Choice(int surveyTemplateID, int choiceID,int questionID, string name, int orderNo) {
             QuestionID = questionID;
+            this.SurveyTemplateID = surveyTemplateID;
             Name = name;
             OrderNo = orderNo;
             ChoiceID = choiceID;            
@@ -26,16 +28,19 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         }
     }
 
-    
-
     public class Choices {
         private QueryList<Choice> choices;
         private int QuestionID;
+        private int SurveyTemplateID;
+        /// <summary>
+        /// 
+        /// </summary>
+        public Choices() { }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="questionID"></param>
-        public Choices(int questionID) {
+        public Choices(int questionID,int surveyTemplateID) {
             choices = new QueryList<Choice>();
             QuestionID = questionID;
         }
@@ -50,7 +55,7 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         public bool Add(string[] itemArray) {
             for (int i = 0; i < itemArray.Length; i++) {
                 if (!isExist(itemArray[i].ToString())) {
-                    choices.Add(new Choice(-1, QuestionID, itemArray[i].ToString(), i + 1));
+                    choices.Add(new Choice(this.SurveyTemplateID, -1, QuestionID, itemArray[i].ToString(), i + 1));
                 }                
             }
             return true;
@@ -64,7 +69,7 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         /// <param name="orderNo"></param>
         /// <returns></returns>
         public bool Add(int choiceID, string name, int orderNo) {
-            choices.Add(new Choice(choiceID, this.QuestionID, name, orderNo));
+            choices.Add(new Choice(this.SurveyTemplateID,choiceID, this.QuestionID, name, orderNo));
             return true;
         }
         /// <summary>

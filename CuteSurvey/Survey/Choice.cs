@@ -18,7 +18,7 @@ namespace CuteSurvey.Survey.Question
 
     public class Choices:SurveyFactory.Component.QuestionItem.Choices {
         public int SurveyID { get; set; }
-        public Choices(int surveyID, int questionID):base(questionID) {
+        public Choices(int surveyID, int questionID):base(surveyID,questionID) {
             SurveyID = surveyID;
         }
     }

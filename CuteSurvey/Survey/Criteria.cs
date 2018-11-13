@@ -17,7 +17,7 @@ namespace CuteSurvey.Survey
 
     public class Criterias : SurveyFactory.Component.QuestionItem.Criterias {
         public int SurveyID { get; set; }
-        public Criterias(int surveyID, int questionID) : base(questionID) {
+        public Criterias(int surveyID, int questionID) : base(surveyID, questionID) {
             this.SurveyID = surveyID;            
         }       
     }

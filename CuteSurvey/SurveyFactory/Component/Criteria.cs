@@ -9,12 +9,14 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
 {
  public   class Criteria
     {
-        public string Name;
-        public int OrderNo;
-        public int CriteriaID;
-        public int QuestionID;
-        public Criteria(int criteriaID, int questionID, string name, int orderNo)
+        public string Name { get; set; }
+        public int OrderNo { get; set; }
+        public int CriteriaID { get; set; }
+        public int QuestionID { get; set; }
+        public int SurveyTemplateID { get; set; }
+        public Criteria(int surveyTemplateID,int criteriaID, int questionID, string name, int orderNo)
         {
+            SurveyTemplateID = surveyTemplateID;
             QuestionID = questionID;
             Name = name;
             OrderNo = orderNo;
@@ -32,11 +34,13 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
     public class Criterias {
            private QueryList<Criteria> criterias;
         private int QuestionID;
+        private int SurveyTemplateID;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="questionID"></param>
-        public Criterias(int questionID) {
+        public Criterias(int surveyTemplateID, int questionID) {
+            SurveyTemplateID = surveyTemplateID;
             criterias = new QueryList<Criteria>();
             QuestionID = questionID;
         }
@@ -51,7 +55,7 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         public bool Add(string[] itemArray) {
             for (int i = 0; i < itemArray.Length; i++) {
                 if (!isExist(itemArray[i].ToString())) {
-                    criterias.Add(new Criteria(-1, QuestionID, itemArray[i].ToString(), i + 1));
+                    criterias.Add(new Criteria(this.SurveyTemplateID, -1, QuestionID, itemArray[i].ToString(), i + 1));
                 }                
             }
             return true;
@@ -65,7 +69,7 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         /// <param name="orderNo"></param>
         /// <returns></returns>
         public bool Add(int CriteriaID, string name, int orderNo) {
-            criterias.Add(new Criteria(CriteriaID, this.QuestionID, name, orderNo));
+            criterias.Add(new Criteria(this.SurveyTemplateID,CriteriaID, this.QuestionID, name, orderNo));
             return true;
         }
         /// <summary>

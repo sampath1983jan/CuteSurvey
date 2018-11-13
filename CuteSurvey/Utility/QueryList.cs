@@ -24,7 +24,9 @@ namespace CuteSurvey.Utility
         {
             ql.RemoveAt(ql.IndexOf(ql.Where(search).FirstOrDefault()));
         }
-
+        public int Max(Func<T, int> max) {
+            return ql.Max<T>(max);
+        }
         public List<T> Search(Func<T, bool> search) {
             return ql.Where(search).ToList<T>();
         }

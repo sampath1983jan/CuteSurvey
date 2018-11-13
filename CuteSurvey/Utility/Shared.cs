@@ -58,7 +58,10 @@ namespace CuteSurvey.Utility
                             }
                         }
                     }
-                    instanceOfT = Bind(instanceOfT);
+                    if (Bind is null)
+                    {
+                    }
+                    else { instanceOfT = Bind(instanceOfT); }  
                     return instanceOfT;
                 }).ToList();
 
