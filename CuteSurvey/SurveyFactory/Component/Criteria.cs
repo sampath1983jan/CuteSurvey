@@ -32,9 +32,14 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
     }
 
     public class Criterias {
-           private QueryList<Criteria> criterias;
-        private int QuestionID;
-        private int SurveyTemplateID;
+           private QueryList<Criteria> criterias { get; set; }
+        private int QuestionID { get; set; }
+        private int SurveyTemplateID { get; set; }
+
+        public Criterias() {
+            this.SurveyTemplateID = -1;
+            this.QuestionID = -1;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -70,6 +75,11 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         /// <returns></returns>
         public bool Add(int CriteriaID, string name, int orderNo) {
             criterias.Add(new Criteria(this.SurveyTemplateID,CriteriaID, this.QuestionID, name, orderNo));
+            return true;
+        }
+        internal bool Add(Criteria c)
+        {
+            criterias.Add(c);
             return true;
         }
         /// <summary>

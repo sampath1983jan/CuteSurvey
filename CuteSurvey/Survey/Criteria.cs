@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CuteSurvey;
-namespace CuteSurvey.Survey
+namespace CuteSurvey.Survey.QuestionItem
 {
     public class Criteria:SurveyFactory.Component.QuestionItem.Criteria 
     {

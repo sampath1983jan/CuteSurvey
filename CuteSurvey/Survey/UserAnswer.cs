@@ -36,7 +36,9 @@ namespace CuteSurvey
         public bool EnableComment { get => enableComments; set => enableComments=value; }
         public string Answer { get => answer; set => answer=value; }
 
-        public Question Default()
+        
+
+        SurveyFactory.Component.Question IQuestion.Default()
         {
             throw new NotImplementedException();
         }

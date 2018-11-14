@@ -15,7 +15,7 @@ using CuteSurvey.SurveyFactory;
 
 namespace CuteSurvey.Implimentor
 {
-    public class SurveyTemplateImplimentor : ISurveyActions
+    public class SurveyTemplateImplimentor : SurveyFactory.ISurveyActions
     {
         string conn = "SslMode=none;persistsecurityinfo=True;SERVER=localhost;UID=root;DATABASE=cutesurvey;PASSWORD=admin312;";
         public bool Delete(int templateID)

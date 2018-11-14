@@ -33,11 +33,11 @@ namespace CuteSurvey.Implimentor
             }
             else return false;
         }
-        public bool AddQuestion(Question question)
+        public bool AddQuestion(CuteSurvey.SurveyFactory.Component.Question question)
         {
             throw new NotImplementedException();
         }
-        public Question Duplicate(Question question)
+        public CuteSurvey.SurveyFactory.Component.Question Duplicate(CuteSurvey.SurveyFactory.Component.Question question)
         {
             int key = Save(question);
             if (key >0)
@@ -54,13 +54,26 @@ namespace CuteSurvey.Implimentor
             dt = qust.GetQuestions(surveyTemplateID);
             return dt;
         }
+
+        public DataTable LoadChoices(int surveyTemplateID, int questionID)
+        {
+            Data.QuestionChoices qc = new Data.QuestionChoices(conn);
+            return qc.GetChoices(surveyTemplateID, questionID);
+        }
+
+        public DataTable LoadCritieria(int surveyTemplateID, int questionID)
+        {
+            Data.QuestionCriteria qc = new Data.QuestionCriteria(conn);
+           return qc.GetCriteria(surveyTemplateID, questionID);
+        }
+
         public bool Remove(int surveyTemplateID,int questionID)
         {
             qust = new Data.Questions(conn);
             return qust.Remove(surveyTemplateID, questionID);
         }
 
-        public bool Remove(Question question)
+        public bool Remove(CuteSurvey.SurveyFactory.Component.Question question)
         {
             qust = new Data.Questions(conn);
            return qust.Remove(question.TemplateID, question.QuestionID);           
@@ -90,14 +103,14 @@ namespace CuteSurvey.Implimentor
             return qc.RemoveAll(surveyTemplateID, questionID);
         }
 
-        public int Save(Question question)
+        public int Save(CuteSurvey.SurveyFactory.Component.Question question)
         {
             qust = new Data.Questions(conn);
            return qust.Save(question.TemplateID, question.QuestionName, question.Comments, (int)question.QuestionType, question.Note, question.IsRequired,
                 question.MaxLength, (int)question.SelectionChoice, question.EnableComment, question.PageNo,question.ValidationMessage );                                   
         }
 
-        public bool Update(Question question)
+        public bool Update(CuteSurvey.SurveyFactory.Component.Question question)
         {
             qust = new Data.Questions(conn);
             return qust.Update(question.TemplateID, question.QuestionID, question.QuestionName, question.Comments, question.Note, question.IsRequired,

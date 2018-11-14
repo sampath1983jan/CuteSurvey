@@ -11,18 +11,20 @@ namespace CuteSurvey.SurveyFactory.Component
 {
     public interface IQuestions {
         DataTable Load(int surveyTemplateID);
-        int Save(Question question);
-        bool Update(Question question);
-        bool AddQuestion(Question question);
+        DataTable LoadChoices(int surveyTemplateID, int questionID);
+        DataTable LoadCritieria(int surveyTemplateID, int questionID);
+        int Save(CuteSurvey.SurveyFactory.Component.Question question);
+        bool Update(CuteSurvey.SurveyFactory.Component.Question question);
+        bool AddQuestion(CuteSurvey.SurveyFactory.Component.Question question);
         bool AddChoices(int surveyTemplateID,int questionID, string choices,int choiceOrder);
         bool AddCriteria(int surveyTemplateID,int questionID, string criteria,int criteriaOrder);
 
         bool UpdateChoice(int surveyTemplateID, int questionID,int choiceID, string choices, int choiceOrder);
         bool UpdateCriteria(int surveyTemplateID, int questionID,int criteriaID, string criteria, int criteriaOrder);
-        
-        Question Duplicate(Question question);
+
+        CuteSurvey.SurveyFactory.Component.Question Duplicate(CuteSurvey.SurveyFactory.Component.Question question);
         bool Remove(int surveyTemplateID,int questionID);        
-        bool Remove(Question question);
+        bool Remove(CuteSurvey.SurveyFactory.Component.Question question);
         bool RemoveChoices(int surveyTemplateID, int questionID);
         bool RemoveCriterias(int surveyTemplateID, int questionID);
         bool RemoveChoice(int surveyTemplateID, int questionID,int choiceID);
@@ -31,7 +33,9 @@ namespace CuteSurvey.SurveyFactory.Component
 
     public abstract class ISurveyTemplateQuestion
     {
-        public IQuestions questionHandler;       
+        public IQuestions questionHandler;
+        public abstract void Load();
+        
     }
    public class Questions:ISurveyTemplateQuestion
     {
@@ -54,7 +58,7 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <summary>
         /// 
         /// </summary>
-        public void Load() {
+        public override void Load() {
             CheckDataSecurity();
             DataTable  dt = new DataTable();
             List<Question> questions;
@@ -73,10 +77,38 @@ namespace CuteSurvey.SurveyFactory.Component
                   .Add("PageNo", "PageNo")
                   .Add("enableComment", "EnableComment")
                   , null);
+
             foreach (Question q in questions)
             {
+                q.Choices = new QuestionItem.Choices(this.SurveyTemplateID, q.QuestionID);
+                q.Criterias = new QuestionItem.Criterias(this.SurveyTemplateID, q.QuestionID);
                 this.AddQuestion(q);
-            }
+                dt = new DataTable();
+                 dt= questionHandler.LoadChoices(this.SurveyTemplateID, q.QuestionID);
+               var cs= dt.toList<QuestionItem.Choice>(new DataFieldMappings()
+                    .Add("SurveyTemplateID", "SurveyTemplateID")
+                    .Add("QuestionID", "QuestionID")
+                    .Add("ChoiceID", "ChoiceID")
+                    .Add("Name", "Name")
+                    .Add("OrderNo", "OrderNo")
+                    , null);
+                foreach (QuestionItem.Choice c in cs) {
+                    q.Choices.Add(c);
+                }
+                dt = new DataTable();
+                dt = questionHandler.LoadCritieria(this.SurveyTemplateID, q.QuestionID);
+                var crs = dt.toList<QuestionItem.Criteria>(new DataFieldMappings()
+                    .Add("SurveyTemplateID", "SurveyTemplateID")
+                    .Add("QuestionID", "QuestionID")
+                    .Add("CriteriaID", "CriteriaID")
+                    .Add("Criteria", "Name")
+                    .Add("OrderNo", "OrderNo")
+                    , null);
+                foreach (QuestionItem.Criteria  c in crs)
+                {
+                    q.Criterias.Add(c);
+                }
+            }                              
         }
         private void CheckDataSecurity() {
             if (!DataValidation())

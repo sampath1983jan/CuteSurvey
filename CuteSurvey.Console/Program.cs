@@ -80,9 +80,9 @@ namespace CuteSurvey.Console
             survey.SurveyID  = 100;
             return survey;
         }
-        public static bool AfterRemove(Question question) {
-            return true;
-        }
+        //public static bool AfterRemove(Question question) {
+        //    return true;
+        //}
         public static bool CallMe(IQuestion question) {
             return true;
         }

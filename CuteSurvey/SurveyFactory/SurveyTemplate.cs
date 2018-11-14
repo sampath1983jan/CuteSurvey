@@ -14,17 +14,20 @@ using CuteSurvey.Implimentor;
 
 namespace CuteSurvey.SurveyFactory
 {
-    public abstract class ISurveyTemplate
-    {
+    public interface ISurveyTemplateMembers {
         int SurveyTemplateID { get; set; }
         string Name { get; set; }
         string Category { get; set; }
-        string Description { get; set; }    
+        string Description { get; set; }
         string IntroductionNote { get; set; }
         string ThanksNote { get; set; }
-        List<Page> Pages { get; } 
-        Questions Questions {  get; }
-        public ISurveyActions SurveyHandler { get; set; }
+        Pages Pages { get; }
+        CuteSurvey.SurveyFactory.Component.Questions Questions { get; }
+    }
+
+    public abstract class ISurveyTemplate
+    {        
+        public ISurveyActions SurveyTemplateHandler { get; set; }
     }
     public interface ISurveyActions {
         bool Save(SurveyTemplate template);
@@ -32,7 +35,7 @@ namespace CuteSurvey.SurveyFactory
         bool Delete(int SurveyTemplateID);
         DataTable Load(int templateID);        
     }
-    public class SurveyTemplate: ISurveyTemplate
+    public class SurveyTemplate: ISurveyTemplate, ISurveyTemplateMembers
     {
         private int surveyTemplateID;
         private string name;
@@ -40,7 +43,7 @@ namespace CuteSurvey.SurveyFactory
         private string description;
         private string introductionNote;
         private string thanksNote;
-        private Questions questions;
+        private CuteSurvey.SurveyFactory.Component.Questions questions;
         private Pages pages;
         /// <summary>
         /// 
@@ -69,12 +72,14 @@ namespace CuteSurvey.SurveyFactory
         /// <summary>
         /// 
         /// </summary>
-        public Questions Questions { get => questions; }
+        public CuteSurvey.SurveyFactory.Component.Questions Questions { get => questions; }
         /// <summary>
         /// 
         /// </summary>
         public Pages Pages { get => pages; }
+
         
+
 
         /// <summary>
         /// 
@@ -82,7 +87,7 @@ namespace CuteSurvey.SurveyFactory
         private int CurrentPageNo;
         public SurveyTemplate() {
             pages = new  Pages(-1);
-            questions = new Questions(-1);
+            questions = new CuteSurvey.SurveyFactory.Component.Questions(-1);
             questions.questionHandler = new QuestionImplimentor();
             pages.PageHandler = new PageImplimentor();
         }
@@ -94,7 +99,7 @@ namespace CuteSurvey.SurveyFactory
             SurveyTemplateID = surveyTemplateID;
             pages = new Pages(surveyTemplateID);
             pages.PageHandler = new PageImplimentor();
-            questions = new Questions(surveyTemplateID);
+            questions = new CuteSurvey.SurveyFactory.Component.Questions(surveyTemplateID);
             questions.questionHandler = new QuestionImplimentor();
         }
         /// <summary>
@@ -111,7 +116,7 @@ namespace CuteSurvey.SurveyFactory
             Description = description;
             IntroductionNote = introNode;
             ThanksNote = thankNote;
-            questions = new Questions(-1);
+            questions = new CuteSurvey.SurveyFactory.Component.Questions(-1);
             questions.questionHandler = new QuestionImplimentor();
             pages = new  Pages(-1);
             pages.PageHandler = new PageImplimentor();
@@ -128,28 +133,28 @@ namespace CuteSurvey.SurveyFactory
         /// </summary>
         /// <returns></returns>
         public bool Save() {
-            return SurveyHandler.Save(this);            
+            return SurveyTemplateHandler.Save(this);            
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public bool Update() {
-            return SurveyHandler.Update(this);
+            return SurveyTemplateHandler.Update(this);
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public bool Delete() {
-            return SurveyHandler.Delete(this.surveyTemplateID);
+            return SurveyTemplateHandler.Delete(this.surveyTemplateID);
         }
         /// <summary>
         /// 
         /// </summary>
         public void LoadTemplate() {
             DataTable dt = new DataTable();
-         dt=SurveyHandler.Load(this.surveyTemplateID);
+         dt=SurveyTemplateHandler.Load(this.surveyTemplateID);
            SurveyTemplate st;
           st= dt.toList<SurveyTemplate>(new DataFieldMappings()
                .Add("Name", "Name")

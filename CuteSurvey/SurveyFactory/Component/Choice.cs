@@ -29,9 +29,9 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
     }
 
     public class Choices {
-        private QueryList<Choice> choices;
-        private int QuestionID;
-        private int SurveyTemplateID;
+        private int SurveyTemplateID { get; set; }
+        private QueryList<Choice> choices { get; set; }
+        private int QuestionID { get; set; }        
         /// <summary>
         /// 
         /// </summary>
@@ -41,8 +41,9 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         /// </summary>
         /// <param name="questionID"></param>
         public Choices(int questionID,int surveyTemplateID) {
-            choices = new QueryList<Choice>();
+            SurveyTemplateID = surveyTemplateID;
             QuestionID = questionID;
+            choices = new QueryList<Choice>();                        
         }
         public List<Choice> toList() {
             return choices.toList();
@@ -55,7 +56,7 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         public bool Add(string[] itemArray) {
             for (int i = 0; i < itemArray.Length; i++) {
                 if (!isExist(itemArray[i].ToString())) {
-                    choices.Add(new Choice(this.SurveyTemplateID, -1, QuestionID, itemArray[i].ToString(), i + 1));
+                    choices.Add(new Choice(SurveyTemplateID, -1, QuestionID, itemArray[i].ToString(), i + 1));
                 }                
             }
             return true;
@@ -69,9 +70,24 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         /// <param name="orderNo"></param>
         /// <returns></returns>
         public bool Add(int choiceID, string name, int orderNo) {
-            choices.Add(new Choice(this.SurveyTemplateID,choiceID, this.QuestionID, name, orderNo));
+            choices.Add(new Choice(SurveyTemplateID,choiceID, this.QuestionID, name, orderNo));
             return true;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="choiceID"></param>
+        /// <param name="questionID"></param>
+        /// <param name="name"></param>
+        /// <param name="orderNo"></param>
+        /// <returns></returns>
+        public bool Add(Choice c)
+        {
+            choices.Add(c);
+            return true;
+        }
+
         /// <summary>
         /// 
         /// </summary>
