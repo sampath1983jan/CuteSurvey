@@ -90,6 +90,21 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
             return choices.Search(x => x.Name == Name).Count > 0 ? true : false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public bool isExist(int choiceID)
+        {
+            return choices.Search(x => x.ChoiceID == choiceID).Count > 0 ? true : false;
+        }
+
+        public Choice getChoice(int choiceID)
+        {
+            return this.choices.Search(x => x.ChoiceID == choiceID).FirstOrDefault();
+        }
+
     }
 }
 

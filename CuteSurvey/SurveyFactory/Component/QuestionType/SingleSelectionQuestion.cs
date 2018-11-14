@@ -8,10 +8,13 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionType
 {
     public class SingleSelectionQuestion : Question
     {
-     
-        public override Question Clone()
+        public SingleSelectionQuestion(int surveyTemplateID) : base(surveyTemplateID)
         {
-            //throw new NotImplementedException();
+            
+        }
+        
+        public override Question Clone()
+       {            
             return this.MemberwiseClone() as Question;
         }
         public override Question Default()

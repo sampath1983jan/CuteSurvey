@@ -9,6 +9,10 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionType
 
     public class MatricsMultiChoiseQuestion : Question
     {
+        public MatricsMultiChoiseQuestion(int surveyTemplateID) : base(surveyTemplateID)
+        {
+
+        }
         public override Question Clone()
         {
             //throw new NotImplementedException();

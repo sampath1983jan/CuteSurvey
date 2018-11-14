@@ -9,6 +9,12 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionType
     public class RankingQuestion:Question 
     {
 
+        public RankingQuestion(int surveyTemplateID) : base(surveyTemplateID)
+        {
+
+
+        }
+
         public override Question Clone()
         {
             //throw new NotImplementedException();

@@ -8,6 +8,11 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionType
 {
     public class RangeQuestion :Question 
     {
+        public RangeQuestion(int surveyTemplateID) : base(surveyTemplateID)
+        {
+
+
+        }
         public override Question Clone()
         {
             //throw new NotImplementedException();

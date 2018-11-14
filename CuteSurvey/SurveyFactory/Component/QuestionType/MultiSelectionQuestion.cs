@@ -8,6 +8,12 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionType
 {
     public class MultiSelectionQuestion:Question 
     {
+        public MultiSelectionQuestion(int surveyTemplateID) : base(surveyTemplateID)
+        {
+
+
+        }
+
         public override Question Clone()
         {
             //throw new NotImplementedException();

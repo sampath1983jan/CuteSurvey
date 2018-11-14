@@ -116,7 +116,12 @@ namespace CuteSurvey.SurveyFactory.Component
             pageNo = 1;
             return this;
         }
-        
+        public Question(int surveyTemplateID)
+        {
+            this.TemplateID = surveyTemplateID;
+        }
+
+
         public Question UpdateKey() {
             foreach (Choice i in Choices.toList()) {
                 i.QuestionID = QuestionID;

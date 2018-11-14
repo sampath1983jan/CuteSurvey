@@ -11,20 +11,27 @@ namespace CuteSurvey.SurveyFactory.Component
 {
     public interface IQuestions {
         DataTable Load(int surveyTemplateID);
-        bool Save(Question question);
+        int Save(Question question);
         bool Update(Question question);
         bool AddQuestion(Question question);
-        Questions AddChoices(int questionID, string choices);
-        Questions AddCriteria(int questionID, string criteria);
+        bool AddChoices(int surveyTemplateID,int questionID, string choices,int choiceOrder);
+        bool AddCriteria(int surveyTemplateID,int questionID, string criteria,int criteriaOrder);
+
+        bool UpdateChoice(int surveyTemplateID, int questionID,int choiceID, string choices, int choiceOrder);
+        bool UpdateCriteria(int surveyTemplateID, int questionID,int criteriaID, string criteria, int criteriaOrder);
+        
         Question Duplicate(Question question);
-        bool Remove(int questionID);        
+        bool Remove(int surveyTemplateID,int questionID);        
         bool Remove(Question question);
+        bool RemoveChoices(int surveyTemplateID, int questionID);
+        bool RemoveCriterias(int surveyTemplateID, int questionID);
+        bool RemoveChoice(int surveyTemplateID, int questionID,int choiceID);
+        bool RemoveCriteria(int surveyTemplateID, int questionID,int CriteriaID);
     }
 
     public abstract class ISurveyTemplateQuestion
     {
-        public IQuestions questionHandler;
-       // public abstract Question NewQuestion(SurveyQuestionType questionType, int pageNo, string choices = "");
+        public IQuestions questionHandler;       
     }
    public class Questions:ISurveyTemplateQuestion
     {
@@ -48,6 +55,7 @@ namespace CuteSurvey.SurveyFactory.Component
         /// 
         /// </summary>
         public void Load() {
+            CheckDataSecurity();
             DataTable  dt = new DataTable();
             List<Question> questions;
             dt =  questionHandler.Load(SurveyTemplateID);                   
@@ -70,15 +78,26 @@ namespace CuteSurvey.SurveyFactory.Component
                 this.AddQuestion(q);
             }
         }
+        private void CheckDataSecurity() {
+            if (!DataValidation())
+            {
+                throw new Exception("Unknow survey template");
+            }
+        }
+        private bool  DataValidation() {
+            return this.SurveyTemplateID >0 ?true:false;
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="questionType"></param>
         /// <returns></returns>
-        public  Question NewQuestion(SurveyQuestionType questionType,int pageNo, string choices="")
+        public  Question NewQuestion(int surveyTemplateID, SurveyQuestionType questionType,int pageNo, string choices="")
         {
+            CheckDataSecurity();
             var question = CuteSurvey.SurveyFactory.Component.QuestionFactory.Create(
-            new QuestionHanlderFactory(), questionType);
+            new QuestionHanlderFactory(), surveyTemplateID,questionType);
             if (choices != "")
             {
                 question.Choices.Add(choices.Split(Convert.ToChar(',')));
@@ -93,10 +112,32 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <param name="choices"></param>
         /// <returns></returns>
         public Questions AddChoices(int questionID, string choices) {
+           
             if (choices != "") {
-                GetQuestion(questionID).Choices.Add(choices.Split(Convert.ToChar(',')));
-            }            
+                var a = choices.Split(Convert.ToChar(','));
+                GetQuestion(questionID).Choices.Add(choices.Split(Convert.ToChar(',')));              
+            }
             return this;
+        }
+
+        public bool AddChoice(int questionID, QuestionItem.Choice c) {
+            CheckDataSecurity();
+            if (c.ChoiceID > 0)
+            {
+                if (GetQuestion(questionID).Choices.isExist(c.ChoiceID))
+                {
+                    var gChoice = GetQuestion(questionID).Choices.getChoice(c.ChoiceID);
+                    CuteSurvey.Utility.Common.Combine<QuestionItem.Choice>(ref gChoice, c);
+                    return questionHandler.UpdateChoice(this.SurveyTemplateID, questionID, c.ChoiceID, c.Name, c.OrderNo);
+                }
+                else {
+                    return questionHandler.AddChoices(this.SurveyTemplateID, questionID, c.Name, c.OrderNo);
+                }
+            }
+            else
+            {
+            return questionHandler.AddChoices(this.SurveyTemplateID, questionID, c.Name, c.OrderNo);
+            }            
         }
 
         /// <summary>
@@ -107,6 +148,7 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <returns></returns>
         public Questions AddCriteria(int questionID, string criteria)
         {
+           
             if (criteria != "")
             {
                 GetQuestion(questionID).Criterias.Add(criteria.Split(Convert.ToChar(',')));
@@ -116,21 +158,60 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="questionID"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public bool AddCriteria(int questionID, QuestionItem.Criteria c)
+        {
+            CheckDataSecurity();
+            if (c.CriteriaID > 0)
+            {
+                if (GetQuestion(questionID).Criterias.isExist(c.CriteriaID))
+                {
+                    var gChoice = GetQuestion(questionID).Criterias.getCriteria(c.CriteriaID);
+                    CuteSurvey.Utility.Common.Combine<QuestionItem.Criteria >(ref gChoice, c);
+                    return questionHandler.UpdateCriteria(this.SurveyTemplateID, questionID, c.CriteriaID, c.Name, c.OrderNo);
+                }
+                else
+                {
+                    return questionHandler.AddCriteria(this.SurveyTemplateID, questionID, c.Name, c.OrderNo);
+                }
+            }
+            else
+            {
+                return questionHandler.AddCriteria(this.SurveyTemplateID, questionID, c.Name, c.OrderNo);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="questionType"></param>
         /// <returns></returns>
-        public Question NewQuestionWithDefault(SurveyQuestionType questionType,int pageNo)
+        public Question NewQuestionWithDefault(int surveyTemplateID,SurveyQuestionType questionType,int pageNo)
         {
             var question = QuestionFactory.Create(
-            new QuestionHanlderFactory(), questionType);
+            new QuestionHanlderFactory(), surveyTemplateID, questionType);
             question.PageNo = pageNo;
             return question.Default();
         }
         public Question Duplicate(int questionID)
         {
+            CheckDataSecurity();
             var qust = GetQuestion(questionID).Clone();
             qust.QuestionName = "Copy of " + qust.QuestionName;
             qust.QuestionID = -1;
-            questionHandler.Duplicate(qust);
+            var q = questionHandler.Duplicate(qust);
+            if (q != null) {
+                foreach (QuestionItem.Choice c in q.Choices.toList()) {
+                    c.ChoiceID = -1;
+                    AddChoice(q.QuestionID, c);
+                }
+                foreach (QuestionItem.Criteria c in q.Criterias.toList())
+                {
+                    c.CriteriaID = -1;
+                    AddCriteria(q.QuestionID, c);
+                }
+            }
             return qust;
         }
         /// <summary>
@@ -139,11 +220,15 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <param name="questionID"></param>
         /// <param name="afterRemove"></param>
         /// <returns></returns>
-        public bool Remove(int questionID)
+        public bool Remove( int questionID)
         {
+            CheckDataSecurity();
             var quest = GetQuestion(questionID);
             QuestionList.Remove(quest);
-            questionHandler.Remove(questionID);
+            if (questionHandler.Remove(this.SurveyTemplateID, questionID)) {
+                questionHandler.RemoveChoices(this.SurveyTemplateID, questionID);
+                questionHandler.RemoveCriterias(this.SurveyTemplateID, questionID);
+            }
             return true;
         }
         /// <summary>
@@ -174,6 +259,13 @@ namespace CuteSurvey.SurveyFactory.Component
             return GetQuestion(search).Count > 0 ? true : false;
         }
 
+        public bool Save() {
+            foreach (Question q in QuestionList.toList()) {
+                Save(q);
+
+            }
+            return true;
+        }
 
         /// <summary>
         /// 
@@ -181,20 +273,38 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <param name="question"></param>
         /// <param name="Save"></param>
         /// <returns></returns>
-        public bool Save(Question question)
+        private bool Save(Question question)
         {
+            CheckDataSecurity();
             //check Question Exist or not then update;
             if (IsQuestionExist(x => x.QuestionID == question.QuestionID))
             {
                 var gQuestion = GetQuestion(question.QuestionID);
                 CuteSurvey.Utility.Common.Combine<Question>(ref gQuestion, question);
+                if (questionHandler.Update(question))
+                {
+                    foreach (QuestionItem.Choice c in question.Choices.toList())
+                    {
+                        this.AddChoice(question.QuestionID, c);
+                    }
+                    return true;
+                }
+                else return false; 
             }
             else
             {
                 QuestionList.Add(question);
-            }             
-                questionHandler.Save(question);
-           
+                int key = questionHandler.Save(question);
+                question.QuestionID = key;
+                if (key >0)
+                {
+                    foreach (QuestionItem.Choice c in question.Choices.toList())
+                    {
+                        questionHandler.AddChoices(this.SurveyTemplateID, -1, c.Name, c.OrderNo);
+                    }
+                    return true;
+                }
+            }            
             return true;
         }
 
@@ -224,21 +334,18 @@ namespace CuteSurvey.SurveyFactory.Component
         /// <param name="question"></param>
         /// <param name="Delete"></param>
         /// <returns></returns>        
-        public bool Remove(Question question, Func<IQuestion, bool> Delete)
+        public bool Remove(Question question)
         {
+            CheckDataSecurity();
             QuestionList.Remove(question);
-            questionHandler.Remove(question.QuestionID);
-            return Delete(question);
-        }
-
-        public Questions UpdateKey()
-        {
-            foreach (Question i in QuestionList.toList())
+            if (questionHandler.Remove(this.SurveyTemplateID, question.QuestionID))
             {
-                i.TemplateID = SurveyTemplateID;
+                questionHandler.RemoveChoices(this.SurveyTemplateID, question.QuestionID);
+                questionHandler.RemoveCriterias(this.SurveyTemplateID, question.QuestionID);
+                return true;
             }
-            return this;
-        }
+            else return false;           
+        }               
 
     }
 }

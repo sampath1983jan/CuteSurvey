@@ -9,43 +9,43 @@ namespace CuteSurvey.SurveyFactory.Component
 {
     public class QuestionFactory
     {
-        public static Question Create(IQuestionFactory factory, SurveyQuestionType surveyQuestionType) {
-            return factory.Create(surveyQuestionType);
+        public static Question Create(IQuestionFactory factory,int surveyTemplateID, SurveyQuestionType surveyQuestionType) {
+            return factory.Create(surveyTemplateID, surveyQuestionType);
         }
-        public static Question CreateDefault(IQuestionFactory factory, SurveyQuestionType surveyQuestionType) {
-            return factory.Create(surveyQuestionType);
+        public static Question CreateDefault(IQuestionFactory factory, int surveyTemplateID, SurveyQuestionType surveyQuestionType) {
+            return factory.Create(surveyTemplateID, surveyQuestionType);
         }
     }
     public interface IQuestionFactory {
-        Question Create(SurveyQuestionType questionType);
-        IQuestionFactory CreateDefault(SurveyQuestionType questionType);
+        Question Create(int surveyTemplateID,SurveyQuestionType questionType);
+        IQuestionFactory CreateDefault(int surveyTemplateID,SurveyQuestionType questionType);
     }
 
     public class QuestionHanlderFactory : IQuestionFactory
     {
-        public Question Create(SurveyQuestionType questionType)
+        public Question Create(int surveyTemplateID, SurveyQuestionType questionType)
         {
      switch  (questionType){
                 case SurveyQuestionType._input:
-                    return new InputQuestion();
+                    return new InputQuestion(surveyTemplateID);
                 case SurveyQuestionType._LikelyQuestion:
-                    return new LikelyQuestion();
+                    return new LikelyQuestion(surveyTemplateID);
                 case SurveyQuestionType._MatricSelection:
-                   return new MatricsQuestion();                
+                   return new MatricsQuestion(surveyTemplateID);                
                 case SurveyQuestionType._Range:
-                    return new RangeQuestion();
+                    return new RangeQuestion(surveyTemplateID);
                 case SurveyQuestionType._Ranking:
-                    return new RankingQuestion();
+                    return new RankingQuestion(surveyTemplateID);
                 case SurveyQuestionType._singleSelection:
-                    return new SingleSelectionQuestion();
+                    return new SingleSelectionQuestion(surveyTemplateID);
                 case SurveyQuestionType._MatricsMultiChoice:
-                    return new MatricsMultiChoiseQuestion(); 
+                    return new MatricsMultiChoiseQuestion(surveyTemplateID); 
                 default:
-                    return new InputQuestion();
+                    return new InputQuestion(surveyTemplateID);
                 }
         }
 
-        public IQuestionFactory CreateDefault(SurveyQuestionType questionType)
+        public IQuestionFactory CreateDefault(int surveyTemplateID,SurveyQuestionType questionType)
         {
             throw new NotImplementedException();
         }

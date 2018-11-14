@@ -8,6 +8,10 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionType
 {
     public class LikelyQuestion:Question 
     {
+        public LikelyQuestion(int surveyTemplateID) : base(surveyTemplateID)
+        {
+
+        }
         public override Question Clone()
         {
             //throw new NotImplementedException();

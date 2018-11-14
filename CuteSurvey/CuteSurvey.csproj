@@ -43,9 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implimentor\PageImplimentor.cs" />
-    <Compile Include="Implimentor\QuestionImplimentor.cs" />
-    <Compile Include="Implimentor\SurveyTemplateImplimentor.cs" />
+    <Compile Include="Implimentor\SurveyTemplate\PageImplimentor.cs" />
+    <Compile Include="Implimentor\SurveyTemplate\QuestionImplimentor.cs" />
+    <Compile Include="Implimentor\SurveyTemplate\SurveyTemplateImplimentor.cs" />
     <Compile Include="Result\SurveyResult.cs" />
     <Compile Include="SurveyFactory\Component\Choice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

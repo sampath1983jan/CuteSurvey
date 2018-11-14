@@ -89,5 +89,15 @@ namespace CuteSurvey.SurveyFactory.Component.QuestionItem
         public bool isExist(string Name) {
             return criterias.Search(x => x.Name == Name).Count > 0 ? true : false;
         }
+
+        public bool isExist(int criteriaID)
+        {
+            return criterias.Search(x => x.CriteriaID == criteriaID).Count > 0 ? true : false;
+        }
+
+        public Criteria getCriteria(int criteriaID)
+        {
+            return criterias.Search(x => x.CriteriaID == criteriaID).FirstOrDefault();
+        }
     }
 }
