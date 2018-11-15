@@ -77,9 +77,9 @@
     <Compile Include="Utility\Shared.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CuteSurvey.Data\CuteSurvey.Data.csproj">
-      <Project>{55eea4b6-2a38-47ac-87bd-a96579a92eb9}</Project>
-      <Name>CuteSurvey.Data</Name>
+    <ProjectReference Include="..\CuteSurvey.DataModel\CuteSurvey.DataModel.csproj">
+      <Project>{f20e956c-5054-417d-9b11-3bad96891741}</Project>
+      <Name>CuteSurvey.DataModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
