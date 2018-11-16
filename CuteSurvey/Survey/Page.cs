@@ -1,4 +1,5 @@
-﻿using CuteSurvey.Utility;
+﻿using CuteSurvey.SurveyFactory.Component;
+using CuteSurvey.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,63 +7,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CuteSurvey.SurveyFactory.Component
+namespace CuteSurvey.Survey
 {
-    public interface IPage {
-        DataTable Load(int SuveyTemplateID);
-        bool Save(int templateid, string title,string description,int pageNo);
-        bool Update(int templateID,int pageID, string title,string description,int pageNo);
-        bool Remove(int pageID,int surveyTemplateID);
-        bool RemoveAll(int surveyTemplateID);
-    }
 
-    public abstract class ISurveyTemplatePage {
-        public IPage PageHandler;
-    }
-
-    public abstract class PageProvider {
-        public int PageID { get; set; }
-        public int SurveyTemplateID { get; set; }
-        public int PageNo { get; set; }
-        public string PageTitle { get; set; }
-        public string Description { get; set; }
-        private int PageOrder { get; set; }
-    }
 
     public class Page : PageProvider
-    {      
-        public Page() {
-
-        }
-        public Page(string pageName, string description, int pageNo) {
+    {
+        public int SurveyID {get;set;}
+        public Page(string pageName, string description, int pageNo)
+        {
             this.PageID = -1;
             this.PageTitle = pageName;
             this.Description = description;
             this.PageNo = PageNo;
+            this.SurveyID = -1;
         }
-        public Page(int pageID) {
+        public Page(int pageID)
+        {
             this.PageID = pageID;
+            this.PageTitle = "";
+            this.Description = "";
+            this.PageNo = -1;
+            this.SurveyID = -1;
         }
     }
 
-    public class Pages: ISurveyTemplatePage
+    public class Pages : ISurveyTemplatePage
     {
-        /// <summary>
-        ///     
-        /// </summary>
-        private readonly int SurveyTemplateID;
+        private readonly int surveyID;
+        private QueryList<Page> PageList { get; set; }
+        public Pages(int surveyID)
+        {
+            this.surveyID = surveyID;
+        }
+        public Pages() {
+            this.surveyID = -1;
+        }
         /// <summary>
         /// 
         /// </summary>
-        private QueryList<Page> PageList { get; set; }
-
-        public void Load() {
+        public void Load()
+        {
             List<Page> pages;
             DataTable dt = new DataTable();
-            dt = PageHandler.Load(SurveyTemplateID);
+            dt = PageHandler.Load(this.surveyID);
             pages = dt.toList<Page>(new DataFieldMappings()
                 .Add("PageID", "PageID")
-                .Add("SurveyTemplateID", "SurveyTemplateID")
+                .Add("SurveyID", "SurveyID")
                 .Add("PageName", "PageTitle")
                 .Add("PageDescription", "Description")
                 .Add("PageNo", "PageNo")
@@ -72,27 +63,25 @@ namespace CuteSurvey.SurveyFactory.Component
                 PageList.Add(p);
             }
         }
-        public Pages() {
-            this.SurveyTemplateID = -1;
-        }
-        public Pages(int surveyTemplateID) {
-            this.SurveyTemplateID = surveyTemplateID;
-        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private int getPageNo() {
-             return PageList.Max(x => x.PageNo) + 1;
+        private int getPageNo()
+        {
+            return PageList.Max(x => x.PageNo) + 1;
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="PageName"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public Page NewPage(string PageName, string description) {
-            var v = new Page(PageName, description, getPageNo());            
+        public Page NewPage(string PageName, string description)
+        {
+            var v = new Page(PageName, description, getPageNo());
             return v;
         }
         /// <summary>
@@ -103,6 +92,9 @@ namespace CuteSurvey.SurveyFactory.Component
         public Page GetPage(int pageID)
         {
             return PageList.Search(x => x.PageID == pageID).FirstOrDefault();
+        }
+        public Page GetLastPage() {
+            return PageList.toList().Last();
         }
         /// <summary>
         /// 
@@ -127,24 +119,33 @@ namespace CuteSurvey.SurveyFactory.Component
         /// 
         /// </summary>
         /// <param name="page"></param>
-        public void Save(Page page) {
+        private void Save(Page page)
+        {
             if (IsPageExist(x => x.PageID == page.PageID))
             {
-                var gpage = GetPage(page.PageID );
+                var gpage = GetPage(page.PageID);
                 CuteSurvey.Utility.Common.Combine<Page>(ref gpage, page);
-                this.PageHandler.Update(gpage.SurveyTemplateID, gpage.PageID, gpage.PageTitle, gpage.Description, gpage.PageNo);
+                this.PageHandler.Update(gpage.SurveyID,gpage.PageID,gpage.PageTitle,gpage.Description,gpage.PageNo);
             }
             else
             {
                 PageList.Add(page);
             }
-            this.PageHandler.Save(page.SurveyTemplateID, page.PageTitle, page.Description, page.PageNo);
+            this.PageHandler.Save(page.SurveyID, page.PageTitle, page.Description, page.PageNo);
         }
+
+        public void Save() {
+            foreach (Page pg in this.PageList.toList()) {
+                Save(pg);
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="page"></param>
-        public void AddPage(Page page) {
+        public void AddPage(Page page)
+        {
             if (IsPageExist(x => x.PageID == page.PageID))
             {
                 var gpage = GetPage(page.PageID);
@@ -159,8 +160,9 @@ namespace CuteSurvey.SurveyFactory.Component
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool RemoveAll() {
-            if (this.PageHandler.RemoveAll(this.SurveyTemplateID))
+        public bool RemoveAll()
+        {
+            if (this.PageHandler.RemoveAll(this.surveyID))
             {
                 PageList.Clear();
                 return true;
@@ -172,13 +174,15 @@ namespace CuteSurvey.SurveyFactory.Component
         /// </summary>
         /// <param name="pageID"></param>
         /// <returns></returns>
-        public bool  Rmove(int pageID) {
-            if (this.PageHandler.Remove(pageID,this.SurveyTemplateID)) {
-              PageList.Remove(x => x.PageID == pageID);
+        public bool Rmove(int pageID)
+        {
+            if (this.PageHandler.Remove(pageID, this.surveyID))
+            {
+                PageList.Remove(x => x.PageID == pageID);
                 return true;
-            }else return false ;
+            }
+            else return false;
         }
-
 
     }
 }

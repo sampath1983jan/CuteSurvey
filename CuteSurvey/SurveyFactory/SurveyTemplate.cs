@@ -21,7 +21,7 @@ namespace CuteSurvey.SurveyFactory
         string Description { get; set; }
         string IntroductionNote { get; set; }
         string ThanksNote { get; set; }
-        Pages Pages { get; }
+       Component.Pages Pages { get; }
         CuteSurvey.SurveyFactory.Component.Questions Questions { get; }
     }
 
@@ -44,7 +44,7 @@ namespace CuteSurvey.SurveyFactory
         private string introductionNote;
         private string thanksNote;
         private CuteSurvey.SurveyFactory.Component.Questions questions;
-        private Pages pages;
+        private Component.Pages pages;
         /// <summary>
         /// 
         /// </summary>
@@ -76,7 +76,7 @@ namespace CuteSurvey.SurveyFactory
         /// <summary>
         /// 
         /// </summary>
-        public Pages Pages { get => pages; }
+        public Component.Pages Pages { get => pages; }
 
         
 
@@ -86,9 +86,9 @@ namespace CuteSurvey.SurveyFactory
         /// </summary>
         private int CurrentPageNo;
         public SurveyTemplate() {
-            pages = new  Pages(-1);
+            pages = new Component.Pages(-1);
             questions = new CuteSurvey.SurveyFactory.Component.Questions(-1);
-            questions.questionHandler = new QuestionImplimentor();
+            questions.questionHandler = new CuteSurvey.Implimentor.QuestionImplimentor();
             pages.PageHandler = new PageImplimentor();
         }
         /// <summary>
@@ -97,7 +97,7 @@ namespace CuteSurvey.SurveyFactory
         /// <param name="surveyTemplateID"></param>
         public SurveyTemplate(int surveyTemplateID) {
             SurveyTemplateID = surveyTemplateID;
-            pages = new Pages(surveyTemplateID);
+            pages = new Component.Pages(surveyTemplateID);
             pages.PageHandler = new PageImplimentor();
             questions = new CuteSurvey.SurveyFactory.Component.Questions(surveyTemplateID);
             questions.questionHandler = new QuestionImplimentor();
@@ -118,7 +118,7 @@ namespace CuteSurvey.SurveyFactory
             ThanksNote = thankNote;
             questions = new CuteSurvey.SurveyFactory.Component.Questions(-1);
             questions.questionHandler = new QuestionImplimentor();
-            pages = new  Pages(-1);
+            pages = new Component.Pages(-1);
             pages.PageHandler = new PageImplimentor();
             AddPage();
         }

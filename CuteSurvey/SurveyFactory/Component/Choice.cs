@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 using CuteSurvey.Utility;
 namespace CuteSurvey.SurveyFactory.Component.QuestionItem
 {
-    public class Choice
-    {
+    public abstract class ChoiceProvider {
         public string Name { get; set; }
         public int OrderNo { get; set; }
         public int ChoiceID { get; set; }
         public int QuestionID { get; set; }
         public int SurveyTemplateID { get; set; }
+    }
+
+    public class Choice: ChoiceProvider
+    {
+        
         public Choice(int surveyTemplateID, int choiceID,int questionID, string name, int orderNo) {
             QuestionID = questionID;
             this.SurveyTemplateID = surveyTemplateID;

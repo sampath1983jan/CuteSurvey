@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CuteSurvey.Implimentor.Survey
 {
-    public class QuestionImplimentor : IQuestionsHandler
+    public class QuestionImplimentor : CuteSurvey.Survey.IQuestionsHandler
     {
         string conn = "SslMode=none;persistsecurityinfo=True;SERVER=localhost;UID=root;DATABASE=cutesurvey;PASSWORD=admin312;";
         Data.Survey.Question dataQuestion;
@@ -33,19 +33,11 @@ namespace CuteSurvey.Implimentor.Survey
           //  throw new NotImplementedException();
         }
 
-        public bool AddQuestion(Question question)
-        {
-          
+        public bool AddQuestion(CuteSurvey.Survey.Question question)
+        {          
           throw new NotImplementedException();
         }
-
-        public Question Duplicate(Question question)
-        {
-            //question.QuestionID = -1;
-            //return this.Save(question);
-
-            throw new NotImplementedException();
-        }
+             
 
         public DataTable Load(int surveyID)
         {
@@ -74,7 +66,7 @@ namespace CuteSurvey.Implimentor.Survey
             return dataQuestion.Remove(surveyID, questionID);                        
         }
 
-        public bool Remove(Question question)
+        public bool Remove(CuteSurvey.Survey.Question question)
         {
             return dataQuestion.Remove(question.TemplateID, question.QuestionID);
             //throw new NotImplementedException();
@@ -86,11 +78,17 @@ namespace CuteSurvey.Implimentor.Survey
             //throw new NotImplementedException();
         }
 
+        public bool RemoveAllChoices(int surveyID)
+        {
+            return dataChoice.RemoveAll(surveyID);
+            //throw new NotImplementedException();
+        }
+
         public bool RemoveChoices(int surveyID, int questionID)
         {
             return dataChoice.RemoveAll(surveyID, questionID);
             //throw new NotImplementedException();
-        }
+        }               
 
         public bool RemoveCriteria(int surveyID, int questionID, int CriteriaID)
         {
@@ -102,14 +100,14 @@ namespace CuteSurvey.Implimentor.Survey
             return dataCritieria.RemoveAll(surveyID, questionID);                    
         }
 
-        public int Save(Question question)
+        public int Save( CuteSurvey.Survey.Question question)
         {
             return dataQuestion.Save(question.TemplateID, question.QuestionName, question.Comments, (int)question.QuestionType, question.Note,
               question.IsRequired, question.MaxLength, (int)question.SelectionChoice, question.EnableComment, question.PageNo, question.ValidationMessage);
          
         }
 
-        public bool Update(Question question)
+        public bool Update(CuteSurvey.Survey.Question question)
         {
             return dataQuestion.Update(question.TemplateID, question.QuestionID, question.QuestionName, question.Comments, question.Note,
                 question.IsRequired, question.MaxLength, (int)question.SelectionChoice, question.EnableComment, question.PageNo,
@@ -128,5 +126,12 @@ namespace CuteSurvey.Implimentor.Survey
             return dataCritieria.Update(surveyID, questionID, criteriaID, criteria, criteriaOrder);
          
         }
+
+        public bool RemoveAllCriterias(int surveyID)
+        {
+            return dataCritieria.RemoveAll(surveyID);
+        }
+
+        
     }
 }

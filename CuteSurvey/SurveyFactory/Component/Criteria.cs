@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace CuteSurvey.SurveyFactory.Component.QuestionItem
 {
- public   class Criteria
-    {
+    public abstract class CriteriaProvider {
         public string Name { get; set; }
         public int OrderNo { get; set; }
         public int CriteriaID { get; set; }
         public int QuestionID { get; set; }
         public int SurveyTemplateID { get; set; }
+    }
+ public   class Criteria :CriteriaProvider
+    {
+       
         public Criteria(int surveyTemplateID,int criteriaID, int questionID, string name, int orderNo)
         {
             SurveyTemplateID = surveyTemplateID;

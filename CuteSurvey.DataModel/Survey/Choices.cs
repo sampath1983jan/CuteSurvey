@@ -130,5 +130,21 @@ namespace CuteSurvey.Data.Survey
             }
             return rd.ExecuteQuery(iQuery).Result;
         }
+
+        public bool RemoveAll(int SurveyID)
+        {
+            try
+            {
+                iQuery = new QueryBuilder(QueryType._Delete)
+                    .AddField("*", "cs_question_choices")
+                //    .AddWhere(0, "cs_question_choices", "questionID", FieldType._Number, questionID.ToString(), Condition._And)
+                    .AddWhere(0, "cs_question_choices", "SurveyID", FieldType._Number, SurveyID.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("unable to remove choice list. contact system admin", ex.InnerException);
+            }
+            return rd.ExecuteQuery(iQuery).Result;
+        }
     }
 }

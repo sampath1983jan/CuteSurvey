@@ -35,15 +35,28 @@ namespace CuteSurvey.Implimentor
             Data.Pages pg = new Data.Pages(conn);
            return pg.RemoveAll(surveyTemplateID);
         }
-        public bool Save(Page page)
+        //public bool Save(Page page)
+        //{
+        //    Data.Pages pg = new Data.Pages(conn);
+        //    return pg.Save(page.SurveyTemplateID, page.PageTitle, page.Description, page.PageNo);
+        //}
+
+        public bool Save(int templateid, string title, string description, int pageNo)
         {
             Data.Pages pg = new Data.Pages(conn);
-            return pg.Save(page.SurveyTemplateID, page.PageTitle, page.Description, page.PageNo);
-        }       
-        public bool Update(Page page)
+            return pg.Save(templateid, title, description, pageNo);
+        }
+
+        //public bool Update(Page page)
+        //{
+        //    Data.Pages pg = new Data.Pages(conn);
+        //    return pg.Update(page.SurveyTemplateID, page.PageID, page.PageTitle, page.Description, page.PageNo);
+        //}
+
+        public bool Update(int templateID, int pageID, string title, string description, int pageNo)
         {
             Data.Pages pg = new Data.Pages(conn);
-            return pg.Update(page.SurveyTemplateID, page.PageID, page.PageTitle, page.Description, page.PageNo);
+            return pg.Update(templateID, pageID, title, description, pageNo);
         }
     }
 }

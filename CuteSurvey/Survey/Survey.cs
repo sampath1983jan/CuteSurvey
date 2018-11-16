@@ -20,8 +20,17 @@ namespace CuteSurvey.Survey
         ISurveyTemplate Template { get; }
         DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
-        SurveyStatus Status { get; set; }     
+        SurveyStatus Status { get; set; }
+        int SurveyTemplateID { get; set; }
+        string Name { get; set; }
+        string Category { get; set; }
+        string Description { get; set; }
+        string IntroductionNote { get; set; }
+        string ThanksNote { get; set; }
+        Pages Pages { get; }
+       Questions Questions { get; }
         public ISurveyHandler SurveyHandler;
+
     }
     public interface ISurveyHandler {
         bool ChangeStatus(int surveyID, int status);
@@ -34,7 +43,7 @@ namespace CuteSurvey.Survey
     }
 
     [Serializable]
-    public class Survey:ISurvey,ISurveyTemplateMembers 
+    public class Survey:ISurvey 
     {
         private int surveyID;
         private SurveyTemplate template;
@@ -49,7 +58,7 @@ namespace CuteSurvey.Survey
         private string introNote;
         private string thankNote;
         private Pages pages;
-        private CuteSurvey.SurveyFactory.Component.Questions questions;
+        private Questions questions;
 
         public int SurveyID { get => surveyID; set => surveyID=value; }
         public SurveyTemplate Template { get => template; }
@@ -65,16 +74,16 @@ namespace CuteSurvey.Survey
         public string ThanksNote { get => thankNote; set => thankNote=value; }
 
         public Pages Pages => pages;
-        public CuteSurvey.SurveyFactory.Component.Questions Questions => questions;
+        public Questions Questions => questions;
 
         public Survey()
         {
             pages = new Pages();
-            questions = new CuteSurvey.SurveyFactory.Component.Questions(-1);
+            questions = new Questions(-1);
         }
         
         public Survey(int templateID, DateTime startDate, DateTime endDate,
-            SurveyFactory.ISurveyActions surveyTemplateImplimentor, IQuestionsHandler questionsImplimentor, IPage pageImplimentor) {
+            SurveyFactory.ISurveyActions surveyTemplateImplimentor, SurveyFactory.Component.IQuestionsHandler questionsImplimentor, IPage pageImplimentor) {
             Status = SurveyStatus._notstarted;
             template = new SurveyTemplate(templateID);
             template.SurveyTemplateHandler = surveyTemplateImplimentor;
@@ -83,12 +92,13 @@ namespace CuteSurvey.Survey
             StartDate = startDate;
             EndDate = endDate;
             pages = new Pages();
-            questions = new CuteSurvey.SurveyFactory.Component.Questions(templateID);
+            questions = new Questions(templateID);
         }
 
         public Survey(int surveyID) {
             this.SurveyID = surveyID;
             DataTable dt = new DataTable();
+            pages = new Pages(this.surveyID);
            dt= this.SurveyHandler.Load(this.SurveyID.ToString());
           var survey=  dt.toList<Survey>(new DataFieldMappings()
                 .Add("SurveyID", "SurveyID")
@@ -111,14 +121,49 @@ namespace CuteSurvey.Survey
             this.Category = survey.Category;
             this.IntroductionNote = survey.IntroductionNote;
             this.ThanksNote = survey.ThanksNote;
+            this.questions.Load();
+            Pages.Load();
         }
 
         public bool Save() {
+            if (this.surveyID > 0) {
+            return   SurveyHandler.Update(this);
+            }
+            else
+            {
+             this.surveyID= SurveyHandler.Save(this);
+                if (this.surveyID > 0)
+                {
+                    this.questions.Save();
+                    this.pages.Save();
+                    return true;
+                }
+                else return false;
+            }                      
+        }
+        
+        public bool AddQuestion(Question question) {
+         var   newQuestion = this.questions.NewQuestion(this.surveyID, question.QuestionType, this.pages.GetLastPage().PageID);
+            CuteSurvey.Utility.Common.Combine<Question>(ref newQuestion, question);
+            this.questions.Save(newQuestion);           
+            return true;
+        }
+        public bool AddChoice() {
+            return true;
+        }
+
+        public bool AddCriteria() {
             return true;
         }
 
         public bool Remove() {
-            return true;
+            if (SurveyHandler.Delete(this.SurveyID))
+            {
+                this.pages.RemoveAll();
+                this.questions.RemoveAll();
+                return true;
+            }
+            else return false;            
         }
 
        

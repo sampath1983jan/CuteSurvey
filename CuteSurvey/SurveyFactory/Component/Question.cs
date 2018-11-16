@@ -67,7 +67,7 @@ namespace CuteSurvey.SurveyFactory.Component
         private string validationMessage;
         private int pageNo;
         private bool enableComment;
-        public SurveyQuestionType QuestionType;
+        public SurveyQuestionType QuestionType { get; set; }
         public int QuestionID { get => questionID; set => questionID = value; }
         public string QuestionName { get => questionName; set => questionName=value; }
         public string Note { get => note; set => note=value; }

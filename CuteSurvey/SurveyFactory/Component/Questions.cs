@@ -26,16 +26,19 @@ namespace CuteSurvey.SurveyFactory.Component
         bool Remove(int surveyTemplateID,int questionID);
         bool RemoveAll(int templateID);
         bool Remove(CuteSurvey.SurveyFactory.Component.Question question);
+        bool RemoveAllChoices(int surveyTemplateID);
         bool RemoveChoices(int surveyTemplateID, int questionID);
         bool RemoveCriterias(int surveyTemplateID, int questionID);
+        bool RemoveAllCriterias(int surveyTemplateID );
         bool RemoveChoice(int surveyTemplateID, int questionID,int choiceID);
         bool RemoveCriteria(int surveyTemplateID, int questionID,int CriteriaID);
     }
 
     public abstract class ISurveyTemplateQuestion
     {
-        public IQuestionsHandler questionHandler;
+        public   IQuestionsHandler questionHandler;
         public abstract void Load();
+        public abstract bool Save();
         
     }
    public class Questions:ISurveyTemplateQuestion
@@ -292,13 +295,7 @@ namespace CuteSurvey.SurveyFactory.Component
             return GetQuestion(search).Count > 0 ? true : false;
         }
 
-        public bool Save() {
-            foreach (Question q in QuestionList.toList()) {
-                Save(q);
-
-            }
-            return true;
-        }
+        
 
         /// <summary>
         /// 
@@ -378,7 +375,16 @@ namespace CuteSurvey.SurveyFactory.Component
                 return true;
             }
             else return false;           
-        }               
+        }
 
+        public override bool Save()
+        {
+            foreach (Question q in QuestionList.toList())
+            {
+                Save(q);
+
+            }
+            return true;
+        }
     }
 }

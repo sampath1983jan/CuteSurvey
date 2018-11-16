@@ -60,6 +60,7 @@
     <Compile Include="SurveyFactory\Component\QuestionType\InputQuestion.cs" />
     <Compile Include="Survey\Choice.cs" />
     <Compile Include="Survey\Criteria.cs" />
+    <Compile Include="Survey\Page.cs" />
     <Compile Include="Survey\Questions.cs" />
     <Compile Include="Survey\Survey.cs" />
     <Compile Include="SurveyFactory\SurveyManager.cs" />
