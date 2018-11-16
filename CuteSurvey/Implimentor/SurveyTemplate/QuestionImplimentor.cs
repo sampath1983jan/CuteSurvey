@@ -13,7 +13,7 @@ using System.Data;
 using CuteSurvey.Utility;
 namespace CuteSurvey.Implimentor
 {
-    public class QuestionImplimentor: IQuestions
+    public class QuestionImplimentor: IQuestionsHandler
     {
         string conn = "SslMode=none;persistsecurityinfo=True;SERVER=localhost;UID=root;DATABASE=cutesurvey;PASSWORD=admin312;";
         Data.Questions qust;
@@ -77,6 +77,13 @@ namespace CuteSurvey.Implimentor
         {
             qust = new Data.Questions(conn);
            return qust.Remove(question.TemplateID, question.QuestionID);           
+        }
+
+        public bool RemoveAll(int templateID)
+        {
+            qust = new Data.Questions(conn);
+            return qust.RemoveAll(templateID);
+        //    throw new NotImplementedException();
         }
 
         public bool RemoveChoice(int surveyTemplateID, int questionID, int choiceID)

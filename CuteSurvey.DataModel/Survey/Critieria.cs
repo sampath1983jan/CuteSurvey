@@ -10,7 +10,7 @@ using TechSharpy.Data.ABS;
 
 namespace CuteSurvey.Data.Survey
 {
-    class Critieria:DataSource
+   public class Critieria:DataSource
     {
         public Query iQuery;
         public Critieria(string conn)

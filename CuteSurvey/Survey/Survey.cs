@@ -21,10 +21,12 @@ namespace CuteSurvey.Survey
         DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
         SurveyStatus Status { get; set; }     
-        public ISurveyActions SurveyHandler;
+        public ISurveyHandler SurveyHandler;
     }
-    public interface ISurveyActions {
-        bool Save(Survey survey);
+    public interface ISurveyHandler {
+        bool ChangeStatus(int surveyID, int status);
+        bool ChangeEndDate(int surveyID, DateTime endDate);
+        int Save(Survey survey);
         bool Update(Survey survey);
         bool Delete(int surveyID);
         DataTable Load(string surveyID);
@@ -72,7 +74,7 @@ namespace CuteSurvey.Survey
         }
         
         public Survey(int templateID, DateTime startDate, DateTime endDate,
-            SurveyFactory.ISurveyActions surveyTemplateImplimentor, IQuestions questionsImplimentor, IPage pageImplimentor) {
+            SurveyFactory.ISurveyActions surveyTemplateImplimentor, IQuestionsHandler questionsImplimentor, IPage pageImplimentor) {
             Status = SurveyStatus._notstarted;
             template = new SurveyTemplate(templateID);
             template.SurveyTemplateHandler = surveyTemplateImplimentor;

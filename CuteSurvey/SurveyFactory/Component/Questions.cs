@@ -9,7 +9,7 @@ using System.Data;
 
 namespace CuteSurvey.SurveyFactory.Component
 {
-    public interface IQuestions {
+    public interface IQuestionsHandler {
         DataTable Load(int surveyTemplateID);
         DataTable LoadChoices(int surveyTemplateID, int questionID);
         DataTable LoadCritieria(int surveyTemplateID, int questionID);
@@ -23,7 +23,8 @@ namespace CuteSurvey.SurveyFactory.Component
         bool UpdateCriteria(int surveyTemplateID, int questionID,int criteriaID, string criteria, int criteriaOrder);
 
         CuteSurvey.SurveyFactory.Component.Question Duplicate(CuteSurvey.SurveyFactory.Component.Question question);
-        bool Remove(int surveyTemplateID,int questionID);        
+        bool Remove(int surveyTemplateID,int questionID);
+        bool RemoveAll(int templateID);
         bool Remove(CuteSurvey.SurveyFactory.Component.Question question);
         bool RemoveChoices(int surveyTemplateID, int questionID);
         bool RemoveCriterias(int surveyTemplateID, int questionID);
@@ -33,7 +34,7 @@ namespace CuteSurvey.SurveyFactory.Component
 
     public abstract class ISurveyTemplateQuestion
     {
-        public IQuestions questionHandler;
+        public IQuestionsHandler questionHandler;
         public abstract void Load();
         
     }

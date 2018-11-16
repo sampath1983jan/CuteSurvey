@@ -9,7 +9,7 @@ using TechSharpy.Data.ABS;
 
 namespace CuteSurvey.Data.Survey
 {
-    class Page: DataSource
+   public class Page: DataSource
     {
         public Query iQuery;
         public Page(string conn)
