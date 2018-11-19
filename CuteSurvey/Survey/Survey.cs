@@ -81,7 +81,15 @@ namespace CuteSurvey.Survey
             pages = new Pages();
             questions = new Questions(-1);
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="templateID"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="surveyTemplateImplimentor"></param>
+        /// <param name="questionsImplimentor"></param>
+        /// <param name="pageImplimentor"></param>
         public Survey(int templateID, DateTime startDate, DateTime endDate,
             SurveyFactory.ISurveyActions surveyTemplateImplimentor, SurveyFactory.Component.IQuestionsHandler questionsImplimentor, IPage pageImplimentor) {
             Status = SurveyStatus._notstarted;
@@ -94,7 +102,10 @@ namespace CuteSurvey.Survey
             pages = new Pages();
             questions = new Questions(templateID);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="surveyID"></param>
         public Survey(int surveyID) {
             this.SurveyID = surveyID;
             DataTable dt = new DataTable();
@@ -124,7 +135,10 @@ namespace CuteSurvey.Survey
             this.questions.Load();
             Pages.Load();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool Save() {
             if (this.surveyID > 0) {
             return   SurveyHandler.Update(this);
@@ -141,21 +155,39 @@ namespace CuteSurvey.Survey
                 else return false;
             }                      
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
         public bool AddQuestion(Question question) {
          var   newQuestion = this.questions.NewQuestion(this.surveyID, question.QuestionType, this.pages.GetLastPage().PageID);
             CuteSurvey.Utility.Common.Combine<Question>(ref newQuestion, question);
             this.questions.Save(newQuestion);           
             return true;
         }
-        public bool AddChoice() {
-            return true;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="questionID"></param>
+        /// <returns></returns>
+        public bool AddChoice(QuestionItem.Choice c,int questionID) {            
+            return this.questions.AddChoice(questionID ,c);           
         }
-
-        public bool AddCriteria() {
-            return true;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="questionID"></param>
+        /// <returns></returns>
+        public bool AddCriteria(QuestionItem.Criteria c, int questionID) {
+            return this.questions.AddCriteria(questionID, c);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool Remove() {
             if (SurveyHandler.Delete(this.SurveyID))
             {
@@ -164,9 +196,7 @@ namespace CuteSurvey.Survey
                 return true;
             }
             else return false;            
-        }
-
-       
+        }     
     }
     
 }

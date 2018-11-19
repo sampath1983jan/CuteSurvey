@@ -12,10 +12,11 @@ namespace CuteSurvey.Survey
         _done=2
     }
 
-   public class UserSurvey
+   public class SurveyUser
     {
         public int SurveyID { get; set; }
         public int UserID { get; set; }
         public UserSurveyStatus Status { get; set; }
+        
     }
 }

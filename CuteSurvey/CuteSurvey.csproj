@@ -63,7 +63,7 @@
     <Compile Include="Survey\Page.cs" />
     <Compile Include="Survey\Questions.cs" />
     <Compile Include="Survey\Survey.cs" />
-    <Compile Include="SurveyFactory\SurveyManager.cs" />
+    <Compile Include="SurveyFactory\SurveyBuilder.cs" />
     <Compile Include="SurveyFactory\SurveyTemplate.cs" />
     <Compile Include="SurveyFactory\Component\QuestionType\LikelyQuestion.cs" />
     <Compile Include="SurveyFactory\Component\QuestionType\MatricsMultiChoiseQuestion.cs" />
@@ -72,6 +72,7 @@
     <Compile Include="SurveyFactory\Component\QuestionType\MatricsQuestion.cs" />
     <Compile Include="SurveyFactory\Component\QuestionType\RankingQuestion.cs" />
     <Compile Include="SurveyFactory\Component\QuestionType\SingleSelectionQuestion.cs" />
+    <Compile Include="Survey\SurveyManager.cs" />
     <Compile Include="Survey\UserAnswer.cs" />
     <Compile Include="Survey\UserSurvey.cs" />
     <Compile Include="Utility\QueryList.cs" />

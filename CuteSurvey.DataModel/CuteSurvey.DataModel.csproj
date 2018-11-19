@@ -70,6 +70,9 @@
     <Compile Include="Survey\Page.cs" />
     <Compile Include="Survey\Question.cs" />
     <Compile Include="Survey\Survey.cs" />
+    <Compile Include="Survey\SurveyUser.cs" />
+    <Compile Include="Survey\UserAnswer.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,41 +6,45 @@ using System.Threading.Tasks;
 using CuteSurvey.Survey;
 using CuteSurvey.SurveyFactory.Component;
 
-namespace CuteSurvey
+namespace CuteSurvey.Survey
 {
-   public  class UserAnswer : IQuestion
-    {
-        private int templateID;
-        private int questionID;
-        private string questionName;
-        private string note;
-        private string comments;
-        private bool isRequired;
-       private int maxLength;
-        private int pageNo;
-        private string validationMessage;
-        private SelectionChoice selectionChoice;
-        private bool enableComments;
-        private string answer;
+    public class IUserAnswer {
+        public int UserID { get; set; }
+        public int Question { get; set; }
+        public string Answer { get; set; }
+        public UserAnswerHandler UserAnswerHandler { get; set; }
+    }
 
-        public int TemplateID { get => templateID; set => templateID = value; }
-        public int QuestionID { get => questionID; set => questionID = value; }
-        public string QuestionName { get => questionName; set=> questionName = value; }
-        public string Note { get => note; set => note = value; }
-        public string Comments { get => comments; set => comments = value; }
-        public bool IsRequired { get => isRequired; set => isRequired=value; }
-        public int MaxLength { get => maxLength; set => maxLength=value; }
-        public int PageNo { get => pageNo; set => pageNo=value; }
-        public string ValidationMessage { get => validationMessage; set => validationMessage=value; }
-        public SelectionChoice SelectionChoice { get => selectionChoice; set=>selectionChoice=value; }
-        public bool EnableComment { get => enableComments; set => enableComments=value; }
-        public string Answer { get => answer; set => answer=value; }
+    public interface UserAnswerHandler {
+        bool Save(int questionID,int userID,string answer);
+        bool Update(int questionID, int userID, string answer);
+        bool clear(int questionID, int userID);
+    }
 
-        
+   public  class UserAnswer :IUserAnswer
+    {   
+       public UserAnswer(){
+            this.UserID = -1;
+            this.Answer = "";
+            this.Question = -1;
+        }
 
-        SurveyFactory.Component.Question IQuestion.Default()
-        {
-            throw new NotImplementedException();
+        public UserAnswer(int questionID,int userID, string answer) {
+            this.Question = questionID;
+            this.UserID = UserID;
+            this.Answer = answer;
+        }
+
+        public bool Save() {
+         return   this.UserAnswerHandler.Save(this.Question, this.UserID, this.Answer);
+        }
+
+        public bool Update() {
+            return this.UserAnswerHandler.Update(this.Question, this.UserID, this.Answer);
+        }
+
+        public bool Clear() {
+            return this.UserAnswerHandler.clear(this.Question, this.UserID);
         }
     }
 }
