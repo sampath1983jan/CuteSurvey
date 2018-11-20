@@ -17,6 +17,22 @@ namespace CuteSurvey.Survey
         public int SurveyID { get; set; }
         public int UserID { get; set; }
         public UserSurveyStatus Status { get; set; }
-        
+        public List<UserAnswer> UserAnswers;
+
+        public SurveyUser(int surveyID, int userID) {
+            this.SurveyID = surveyID;
+            this.UserID = UserID;
+            this.Status = UserSurveyStatus._pending;
+        }
+
+        public SurveyUser() {
+            this.SurveyID = -1;
+            this.UserID = -1;
+            this.Status = UserSurveyStatus._pending;
+        }
+
+         
+
+
     }
 }

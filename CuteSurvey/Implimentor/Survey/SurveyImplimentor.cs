@@ -47,6 +47,13 @@ namespace CuteSurvey.Implimentor.Survey
            return  pg.GetPages(SurveyID);           
         }
 
+        public DataTable LoadUser(int SurveyID)
+        {
+            Data.Survey.SurveyUser su = new Data.Survey.SurveyUser(conn);
+            return su.GetSurveyUserList(SurveyID);
+            //throw new NotImplementedException();
+        }
+
         public int Save(CuteSurvey.Survey.Survey survey)
         {
            return dataSurvey.SaveSurvey(survey.SurveyTemplateID, survey.StartDate, survey.EndDate, survey.Name, survey.Description,

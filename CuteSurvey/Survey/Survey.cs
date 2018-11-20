@@ -30,6 +30,7 @@ namespace CuteSurvey.Survey
         Pages Pages { get; }
        Questions Questions { get; }
         public ISurveyHandler SurveyHandler;
+        public List<SurveyUser> SurveyUser;
 
     }
     public interface ISurveyHandler {
@@ -39,11 +40,13 @@ namespace CuteSurvey.Survey
         bool Update(Survey survey);
         bool Delete(int surveyID);
         DataTable Load(string surveyID);
-        DataTable LoadPage(int SurveyID);        
+        DataTable LoadPage(int SurveyID);
+        //DataTable LoadUser(int SurveyID);
+        //DataTable LoadUserAnswer(int surveyID, int userID);
     }
 
     [Serializable]
-    public class Survey:ISurvey 
+    public class Survey:ISurvey
     {
         private int surveyID;
         private SurveyTemplate template;
@@ -60,6 +63,8 @@ namespace CuteSurvey.Survey
         private Pages pages;
         private Questions questions;
 
+        private List< SurveyUser> surveyUser;
+
         public int SurveyID { get => surveyID; set => surveyID=value; }
         public SurveyTemplate Template { get => template; }
         public DateTime StartDate { get => startDate; set => startDate = value; }
@@ -73,12 +78,15 @@ namespace CuteSurvey.Survey
         public string IntroductionNote { get => introNote; set => introNote=value; }
         public string ThanksNote { get => thankNote; set => thankNote=value; }
 
+
         public Pages Pages => pages;
         public Questions Questions => questions;
+   
 
         public Survey()
         {
             pages = new Pages();
+            surveyUser = new List<SurveyUser>();
             questions = new Questions(-1);
         }
         /// <summary>
@@ -101,6 +109,7 @@ namespace CuteSurvey.Survey
             EndDate = endDate;
             pages = new Pages();
             questions = new Questions(templateID);
+            surveyUser = new List<SurveyUser>();
         }
         /// <summary>
         /// 
@@ -110,7 +119,8 @@ namespace CuteSurvey.Survey
             this.SurveyID = surveyID;
             DataTable dt = new DataTable();
             pages = new Pages(this.surveyID);
-           dt= this.SurveyHandler.Load(this.SurveyID.ToString());
+            surveyUser = new List<SurveyUser>();
+            dt = this.SurveyHandler.Load(this.SurveyID.ToString());
           var survey=  dt.toList<Survey>(new DataFieldMappings()
                 .Add("SurveyID", "SurveyID")
                 .Add("SurveyTemplate", "SurveyTemplateID")
@@ -135,6 +145,10 @@ namespace CuteSurvey.Survey
             this.questions.Load();
             Pages.Load();
         }
+
+      
+
+       
         /// <summary>
         /// 
         /// </summary>
@@ -175,6 +189,22 @@ namespace CuteSurvey.Survey
         public bool AddChoice(QuestionItem.Choice c,int questionID) {            
             return this.questions.AddChoice(questionID ,c);           
         }
+
+        public bool ChangeEndDate(DateTime endDate) {
+            this.EndDate = endDate;
+            return this.SurveyHandler.ChangeEndDate(this.surveyID, endDate);
+        }
+
+        public bool MoveStatusToProgress() {
+            this.Status = SurveyStatus._progress;
+            return this.SurveyHandler.ChangeStatus(this.surveyID, (int)this.Status);
+        }
+
+        public bool MoveStatusToComplete() {
+            this.Status = SurveyStatus._completed;
+            return this.SurveyHandler.ChangeStatus(this.surveyID, (int)this.Status);
+        }
+
         /// <summary>
         /// 
         /// </summary>

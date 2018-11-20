@@ -60,6 +60,59 @@ namespace CuteSurvey.Data.Survey
             }
         }
 
+        public void UpdateQuestionAnswer(int surveyID, int userID, int questionID, int choiceID, int criteriaid, string answer, string comments) {
+            iQuery = new QueryBuilder(QueryType._BulkInsert)
+            .AddField("surveyID", "cs_survey_user_answer", FieldType._Number, "", surveyID.ToString())
+                  .AddField("UserID", "cs_survey_user_answer", FieldType._Number, "", userID.ToString())
+                  .AddField("QuestionID", "cs_survey_user_answer", FieldType._Number, "", questionID.ToString())
+                  .AddField("ChoiceID", "cs_survey_user_answer", FieldType._Number, "", choiceID.ToString())
+                  .AddField("CriteriaID", "cs_survey_user_answer", FieldType._Number, "", criteriaid.ToString())
+                  .AddField("Answer", "cs_survey_user_answer", FieldType._Text, "", answer)
+                  .AddField("Comments", "cs_survey_user_answer", FieldType._Text, "", comments);
+        }
+
+        public bool SaveQuestionAnswer(int surveyID, int UserID, int questionID, int choiceID, int criteriaid, string answer, string comments) {
+            iQuery = new QueryBuilder(QueryType._BulkInsert)
+             .AddField("surveyID", "cs_survey_user_answer", FieldType._Number, "", surveyID.ToString())
+                   .AddField("UserID", "cs_survey_user_answer", FieldType._Number, "", UserID.ToString())
+                   .AddField("QuestionID", "cs_survey_user_answer", FieldType._Number, "", questionID.ToString())
+                   .AddField("ChoiceID", "cs_survey_user_answer", FieldType._Number, "", choiceID.ToString())
+                   .AddField("CriteriaID", "cs_survey_user_answer", FieldType._Number, "", criteriaid.ToString())
+                   .AddField("Answer", "cs_survey_user_answer", FieldType._Text, "", answer)
+                   .AddField("Comments", "cs_survey_user_answer", FieldType._Text, "", comments);
+            if (rd.ExecuteQuery(iQuery).Result)
+            {                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void AddQuestionAnswer(int surveyID,int UserID, int questionID,int choiceID,int criteriaid, string answer,string comments) {
+            iQuery = new QueryBuilder(QueryType._BulkInsert)
+              .AddField("surveyID", "cs_survey_user_answer", FieldType._Number, "",surveyID.ToString())
+                    .AddField("UserID", "cs_survey_user_answer", FieldType._Number, "",UserID.ToString())
+                    .AddField("QuestionID", "cs_survey_user_answer", FieldType._Number, "",questionID.ToString())
+                    .AddField("ChoiceID", "cs_survey_user_answer", FieldType._Number, "",choiceID.ToString())
+                    .AddField("CriteriaID", "cs_survey_user_answer", FieldType._Number, "",criteriaid.ToString())
+                    .AddField("Answer", "cs_survey_user_answer", FieldType._Text, "",answer)
+                    .AddField("Comments", "cs_survey_user_answer", FieldType._Text, "",comments);             
+        }
+
+        public bool SaveQuestionAnswer() {
+            if (rd.ExecuteQuery(iQuery).Result)
+            {
+                iQuery.QueryFields.Clear();
+                iQuery.Tables.Clear();
+                iQuery.WhereGroups.Clear();               
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
 
     }
 }
