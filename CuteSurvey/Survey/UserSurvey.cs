@@ -30,8 +30,15 @@ namespace CuteSurvey.Survey
             this.UserID = -1;
             this.Status = UserSurveyStatus._pending;
         }
-
-         
+        
+        public bool IsUserAnsweredAllQuestion() {
+            foreach (UserAnswer us in UserAnswers) {
+                if (!us.isAnswered()) {
+                    return false;
+                }
+            }
+            return true;
+        }         
 
 
     }

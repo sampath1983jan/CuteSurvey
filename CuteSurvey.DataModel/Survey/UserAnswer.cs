@@ -17,7 +17,6 @@ namespace CuteSurvey.Data.Survey
         {
             base.Init(conn);
         }
-
         public DataTable GetSurveyQuestionAnswer(int surveyID)
         {
             try
@@ -60,15 +59,27 @@ namespace CuteSurvey.Data.Survey
             }
         }
 
-        public void UpdateQuestionAnswer(int surveyID, int userID, int questionID, int choiceID, int criteriaid, string answer, string comments) {
+        public bool UpdateQuestionAnswer(int surveyID, int userID, int questionID, int choiceID, int criteriaid, string answer, string comments) {
             iQuery = new QueryBuilder(QueryType._BulkInsert)
-            .AddField("surveyID", "cs_survey_user_answer", FieldType._Number, "", surveyID.ToString())
-                  .AddField("UserID", "cs_survey_user_answer", FieldType._Number, "", userID.ToString())
-                  .AddField("QuestionID", "cs_survey_user_answer", FieldType._Number, "", questionID.ToString())
+         //   .AddField("surveyID", "cs_survey_user_answer", FieldType._Number, "", surveyID.ToString())
+                 // .AddField("UserID", "cs_survey_user_answer", FieldType._Number, "", userID.ToString())
+                ////  .AddField("QuestionID", "cs_survey_user_answer", FieldType._Number, "", questionID.ToString())
                   .AddField("ChoiceID", "cs_survey_user_answer", FieldType._Number, "", choiceID.ToString())
                   .AddField("CriteriaID", "cs_survey_user_answer", FieldType._Number, "", criteriaid.ToString())
                   .AddField("Answer", "cs_survey_user_answer", FieldType._Text, "", answer)
-                  .AddField("Comments", "cs_survey_user_answer", FieldType._Text, "", comments);
+                  .AddField("Comments", "cs_survey_user_answer", FieldType._Text, "", comments)
+                .AddWhere(0, "cs_survey_user_answer", "QuestionID", FieldType._Number, Operator._Equal, questionID.ToString(), Condition._And)
+                .AddWhere(0, "cs_survey_user_answer", "surveyID", FieldType._Number, Operator._Equal, surveyID.ToString(), Condition._And)
+                .AddWhere(0, "cs_survey_user_answer", "UserID", FieldType._Number, Operator._Equal, userID.ToString());
+            if (rd.ExecuteQuery(iQuery).Result)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public bool SaveQuestionAnswer(int surveyID, int UserID, int questionID, int choiceID, int criteriaid, string answer, string comments) {

@@ -12,8 +12,7 @@ namespace CuteSurvey.Survey
     public abstract class SurveyManagerProvider {
        public Survey Survey;
         public List<SurveyUser> surveyUsers;
-        public ISurveyManagerHandler SurveyManagerHandler;
-        
+        public ISurveyManagerHandler SurveyManagerHandler;        
     }
 
     public interface ISurveyManagerHandler {
@@ -22,9 +21,9 @@ namespace CuteSurvey.Survey
         bool SaveAnswer(int surveyID, int questionID, int userID, int choiceID, int criteriaID, string answer, string comments);
         bool UpdateAnswer(int surveyID, int questionID, int userID, int choiceID, int criteriaID, string answer, string comments);
         bool ClearAnswer(int surveyID, int questionID, int userID);
-        bool AssigeUser();
+        bool AssigeUser(int surveyID, int userID, UserSurveyStatus userSurveyStatus );
+        bool RemoveUser(int surveyID, int userID);
     }
-
     public class SurveyManager : SurveyManagerProvider
     {
         private int SurveyID { get; set; }
@@ -37,6 +36,7 @@ namespace CuteSurvey.Survey
             this.SurveyID = surveyID;
             this.UserID = userID;
             newsurveyUsers = new List<SurveyUser>();
+            LoadUser();
         }
         /// <summary>
         /// 
@@ -62,16 +62,34 @@ namespace CuteSurvey.Survey
                 .Add("Status", "Status"),
                 null).ToList();
         }
-
-        public void AddUser(int userID) {
+        /// <summary>
+        /// Add user to the survey using survey manager once added user then you must call SaveUser function. 
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public SurveyManager AddUser(int userID) {
             newsurveyUsers.Add(new SurveyUser(this.SurveyID,userID));
+            return this;
         }
-
         public bool SaveUser() {
-
+            foreach (SurveyUser su in this.newsurveyUsers) {
+                this.SurveyManagerHandler.AssigeUser(this.SurveyID, su.UserID,su.Status);
+            }
+            return true;
         }
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>        /// 
+        public bool RemoveUser() {
+            var su = this.surveyUsers.Where(x => x.UserID == this.UserID).First();
+            if (su != null)
+            {
+                return this.SurveyManagerHandler.RemoveUser(this.SurveyID, this.UserID);
+            }
+            else return false;            
+        }                        
         /// <summary>
         /// 
         /// </summary>
@@ -89,11 +107,13 @@ namespace CuteSurvey.Survey
         /// <param name="userAnswer"></param>
         /// <returns></returns>
         public bool SaveAnswer(int userID, UserAnswer userAnswer) {             
-            userAnswer.UserAnswerHandler = new UserAnswerImpliementation(this);
+            userAnswer.UserAnswerHandler = new UserAnswerImpliementation(this);            
             var UserAnswers = GetUserAnswer(userID);
             if (UserAnswers.Where(x => x.Question == userAnswer.Question && x.UserID == userID).ToList().Count > 0) {
                 userAnswer.Update();
             }else userAnswer.Save();
+            
+
             return true;
         }
         public bool Clear(UserAnswer userAnswer) {

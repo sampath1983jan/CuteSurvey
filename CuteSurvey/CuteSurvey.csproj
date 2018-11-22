@@ -49,6 +49,7 @@
     <Compile Include="Implimentor\Survey\PageImplimentor.cs" />
     <Compile Include="Implimentor\Survey\QuestionImplimentor.cs" />
     <Compile Include="Implimentor\Survey\SurveyImplimentor.cs" />
+    <Compile Include="Implimentor\Survey\SurveyManagerImplimentor.cs" />
     <Compile Include="Result\SurveyResult.cs" />
     <Compile Include="SurveyFactory\Component\Choice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,7 +16,7 @@ namespace CuteSurvey.Survey
         public string Comments { get; set; }
         public int ChoiceID { get; set; }
         public int CriteriaID { get; set; }
-        public UserAnswerHandler UserAnswerHandler { get; set; }
+        public UserAnswerHandler UserAnswerHandler { get; set; }        
     }
 
     public interface UserAnswerHandler {
@@ -45,6 +45,23 @@ namespace CuteSurvey.Survey
             this.ChoiceID = choiceID;
             this.Comments = comments;
             this.SurveyID = surveyID;
+        }
+
+        public bool isAnswered() {
+            if (this.Answer != "")
+            {
+                return true;
+            }
+            else if (this.ChoiceID > 0 && (this.CriteriaID > 0))
+            {
+                return true;
+            }
+            else if (this.ChoiceID > 0)
+            {
+                return true;
+            }
+            else
+                return false;
         }
 
         public bool Save() {
